@@ -18,10 +18,10 @@ class laudanum_dev_box {
   class {'apache::php': }
 
   apache::vhost { "local.${domain[0]}": 
+    vhost_name	=> "local.${domain[0]}",
     docroot	=> "/srv/www/${domain[0]}/public/",
     serveradmin => "mr.snow@houseoflaudanum.com",
     port	=> '80',
-    ipaddr	=> '127.0.0.1',
     priority	=> '10',
     logroot	=> "/srv/www/${domain[0]}/logs/",
   } 
