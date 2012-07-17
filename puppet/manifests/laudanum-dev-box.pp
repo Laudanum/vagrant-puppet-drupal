@@ -19,6 +19,7 @@ class laudanum_dev_box {
 
   apache::vhost { "local.${domain[0]}": 
     docroot	=> "/srv/www/${domain[0]}/public/",
+    serveradmin => "mr.snow@houseoflaudanum.com",
   } 
 
 }
