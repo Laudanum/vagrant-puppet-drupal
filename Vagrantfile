@@ -34,12 +34,17 @@ Vagrant::Config.run do |config|
   config.vm.forward_port 80, 6840
 
   # Install Puppet
-  config.vm.provision :shell, :inline => "sudo yum -y install puppet"
+  # config.vm.provision :shell, :inline => "sudo yum -y install puppet"
+
+  # Install Puppet via puppet labs yum repo
+  config.vm.provision :shell, :path => "install-puppet.sh"
 
   # Share an additional folder to the guest VM. The first argument is
   # an identifier, the second is the path on the guest to mount the
   # folder, and the third is the path on the host to the actual folder.
   # config.vm.share_folder "v-data", "/vagrant_data", "../data"
+
+  # Install Puppet via puppet labs yum repo
 
   # Enable provisioning with Puppet stand alone.  Puppet manifests
   # are contained in a directory path relative to this Vagrantfile.
