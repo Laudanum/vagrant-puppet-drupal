@@ -12,4 +12,4 @@ gpgkey=http://yum.puppetlabs.com/RPM-GPG-KEY-puppetlabslabs yum repo" > vi /etc/
 rpm -Uvh http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-5.noarch.rpm
 
 # Install the Puppet Client packages
-yum install puppet
+sudo yum -y install puppet
