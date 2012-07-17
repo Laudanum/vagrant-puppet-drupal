@@ -1,4 +1,6 @@
 class centos6 {
+  $domain = [ "laudanum.net", ] 
+
   user { "apache": 
     ensure => "present", 
   }
@@ -11,6 +13,14 @@ class centos6 {
   package { "wget":
     ensure => "present",
   }
+
+  class {'apache': }
+  class {'apache::php': }
+
+  apache::vhost { "local.${domain[0]}": 
+    docroot	=> "/srv/www/${domain[0]}/public/",
+  } 
+
 }
 
 
