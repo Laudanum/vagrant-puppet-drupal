@@ -7,7 +7,7 @@ Vagrant::Config.run do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "centos6"
+  config.vm.box = "laudanum-dev-box"
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
@@ -66,7 +66,7 @@ Vagrant::Config.run do |config|
     puppet.options = "--verbose"
     puppet.module_path = "puppet/modules"
     puppet.manifests_path = "puppet/manifests"
-    puppet.manifest_file = "centos6.pp"
+    puppet.manifest_file = "laudanum-dev-box.pp"
   end
 
   # Enable provisioning with chef solo, specifying a cookbooks path, roles
