@@ -1,4 +1,4 @@
-class centos6 {
+class laudanum_dev_box {
   $domain = [ "laudanum.net", ] 
 
   user { "apache": 
@@ -24,4 +24,4 @@ class centos6 {
 }
 
 
-include centos6
+include laudanum_dev_box
