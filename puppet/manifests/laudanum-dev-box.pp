@@ -14,6 +14,16 @@ class laudanum_dev_box {
     ensure => "present",
   }
 
+# Create necessary parent directories.
+  file {["/srv", "/srv/www"]:
+      ensure => directory,
+      mode => 644,
+  }
+  file {"/srv/www/${domain[0]}":
+      ensure => directory,
+      mode   => 644,
+  }
+
   class {'apache': }
   class {'apache::php': }
 
@@ -24,6 +34,7 @@ class laudanum_dev_box {
     port	=> '80',
     priority	=> '10',
     logroot	=> "/srv/www/${domain[0]}/logs/",
+    require	=> File["/srv/www/${domain[0]}"],
   } 
 
 }
