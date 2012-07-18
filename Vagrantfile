@@ -68,7 +68,7 @@ Vagrant::Config.run do |config|
     # for debug, uncomment
     puppet.options = "--verbose --debug"
     # for verbose, uncomment
-    puppet.options = "--verbose"
+    # puppet.options = "--verbose"
     puppet.module_path = "puppet/modules"
     puppet.manifests_path = "puppet/manifests"
     puppet.manifest_file = "laudanum-dev-box.pp"
