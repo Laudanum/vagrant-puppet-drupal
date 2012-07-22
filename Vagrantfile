@@ -15,6 +15,11 @@ Vagrant::Config.run do |config|
   # Fix the os type so that it doesn't complain about the kernel.
   config.vm.customize ["modifyvm", :id, "--ostype", "RedHat_64"]
 
+  # fix hang after `Waiting for VM to boot. This can take a few minutes.`
+  # https://github.com/mitchellh/vagrant/issues/455#issuecomment-1740526
+  config.ssh.max_tries = 150
+  config.vm.customize ["modifyvm", :id, "--rtcuseutc", "on"]
+
   # Boot with a GUI so you can see the screen. (Default is headless)
   # config.vm.boot_mode = :gui
 
@@ -31,7 +36,7 @@ Vagrant::Config.run do |config|
 
   # Forward a port from the guest to the host, which allows for outside
   # computers to access the VM, whereas host only networking does not.
-  config.vm.forward_port 80, 6840
+  config.vm.forward_port 80, 7840
 
   # Install Puppet
   # config.vm.provision :shell, :inline => "sudo yum -y install puppet"
