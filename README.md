@@ -4,10 +4,10 @@
 
 1.   Clone this repo
 1.   Pull in the submodules
-    `$ git submodule init
-$  git submodule update`
+     `$ git submodule init
+     $  git submodule update`
 1.   Bring up Vagrant
-    `$ vagrant up`
+     `$ vagrant up`
 
 
 ##Aims##
