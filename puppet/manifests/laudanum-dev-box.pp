@@ -61,26 +61,19 @@ class laudanum_drupal7_box {
   package { "bzr":
     ensure => "present",
   }
-#  package { "svn": # not found
-#    ensure => "present",
-#  }
-#  package { "sqlite3": # not found
-#    ensure => "present",
-#  }
+  package { "subversion":
+    ensure => "present",
+  }
   package { "sendmail":
     ensure => "present",
   }
-#  package { "php5-cgi": # not found
-#    ensure => "present",
-#  }
-# probably in php core (actually in pdo)
-#  package { "php5-sqlite":
-#    ensure => "present",
-#  }
-  package { "php-pdo":
+  package { "php-pdo":  # enables Sqlite (Quick Drupal requirement)
     ensure => "present",
   }
   package { "php-gd":
+    ensure => "present",
+  }
+  package { "php-xml":  # enables DOM (Drupal Core requirement)
     ensure => "present",
   }
 

@@ -36,13 +36,15 @@ https://github.com/drupalboxes/drupal-puppet/tree/master/drupal
 * Sqlite3 so that quick drupal can make dbs easily (php-pdo)
 * Mail for mailing messages
 
-$ sudo apt-get install bzr ~~svn~~ ~~sqlite3~~ php-pear php5-cgi php5-sqlite ~~squid~~ sendmail
+$ sudo apt-get install bzr ~~svn~~ subversion ~~sqlite3~~ php-pear php5-cgi ~~php5-sqlite~~ php-pdo ~~squid~~ sendmail
 $ sudo pear channel-discover pear.drush.org
 $ sudo pear install drush/drush-6
 $ drush selfupdate
 
 
 ###Quick Drupal###
+Probably not useful. Requires permission to install httpserver and would run within vagrant. Would require extra port forards too.
+`Drush needs to download a library from https://github.com/youngj/httpserver/tarball/41dd2b7160b8cbd25d7b5383e3ffc6d8a9a59478 in order to function, and the attempt to download this file automatically failed because you do[error]`
 $ drush -y qd test-panels panels
 
 ###Download and enable a module###
