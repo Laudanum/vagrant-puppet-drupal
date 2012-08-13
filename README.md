@@ -10,6 +10,8 @@
       $ git submodule update`
 1.   Create the sites directory
      `$ mkdir ../sites`
+1.	 Optionally create your own github ssh keys (they'll be copied into the VM)
+	 `$ mkdir ../ssh-config && ssh-keygen -f ../ssh-config/github.rsa`
 1.   Bring up Vagrant
      `$ vagrant up`
 
@@ -30,8 +32,9 @@
 https://github.com/drupalboxes/drupal-puppet/tree/master/drupal
 
 ##TODO##
-*   Add github to known_hosts
-*   Solve github ssh keys (share with host, copy to host, push vagrants to github)
+*   ~~Add github to known_hosts~~
+*   ~~Solve github ssh keys (share with host, copy to host, push vagrants to github)~~
+*   
 
 ##Installing Drush##
 

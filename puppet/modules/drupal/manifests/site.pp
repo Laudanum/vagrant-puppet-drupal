@@ -55,6 +55,8 @@ define drupal::site(
     port          => 80,
     serveraliases => $aliases,
     serveradmin   =>  'admin@example.com',
+    logroot       => "/var/log/$apache::params::apache_name/${primary_url}"
+
   }
 
 }

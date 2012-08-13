@@ -1,4 +1,15 @@
-$dev_domains = [ "laudanum.net", ] 
+$dev_domains = [ "laudanum.net", "artlib.com.au", ] 
+
+define create_drupal_site {
+  drupal::site { "${name}":
+    databases   => "${name}_local",
+    drupal_root => "/srv/www/${name}",
+    conf        => {},
+    url         => "local.${name}",
+    aliases     => [],
+  }
+
+}
 
 class laudanum_dev_box {
 
@@ -120,22 +131,10 @@ class laudanum_drupal7_box {
     repository => "pear.drush.org",
   }
 
-  class { 'drupal': }
-#   $databases,
-#   $drupal_root,
-#   $conf = { },
-#   $url = null,
-#   $aliases = []
-
-  drupal::site { "${dev_domains[0]}":
-    databases   => "${dev_domains[0]}_local",
-    drupal_root => "/srv/www/sites/${dev_domains[0]}",
-    conf        => {},
-    url         => "local.${dev_domains[0]}",
-    aliases     => [],
-  }
-
+  # loop over domains creating drupal sites
+  create_drupal_site { $dev_domains: }
 }
+
 
 
 include laudanum_dev_box
