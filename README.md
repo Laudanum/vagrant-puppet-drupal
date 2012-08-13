@@ -25,20 +25,25 @@
 *   Add a submodule
     `$ git submodule add git@github.com:rafaelfelix/puppet-pear puppet/modules/pear`
 
+
+##Sources##
+https://github.com/drupalboxes/drupal-puppet/tree/master/drupal
+
 ##Installing Drush##
 
 * ~~Squid for caching make installs~~ (Drush 5.x does this internally)
 * bzr and svn because quick drupal likes it
-* Sqlite3 so that quick drupal can make dbs easily
+* Sqlite3 so that quick drupal can make dbs easily (php-pdo)
 * Mail for mailing messages
 
-$ sudo apt-get install bzr svn sqlite3 php-pear php5-cgi php5-sqlite ~~squid~~ sendmail
+$ sudo apt-get install bzr ~~svn~~ ~~sqlite3~~ php-pear php5-cgi php5-sqlite ~~squid~~ sendmail
 $ sudo pear channel-discover pear.drush.org
 $ sudo pear install drush/drush-6
 $ drush selfupdate
 
+
 ###Quick Drupal###
-$ drush  -y qd test-panels panels
+$ drush -y qd test-panels panels
 
 ###Download and enable a module###
 

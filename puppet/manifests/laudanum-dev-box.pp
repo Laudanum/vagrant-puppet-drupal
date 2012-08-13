@@ -61,22 +61,28 @@ class laudanum_drupal7_box {
   package { "bzr":
     ensure => "present",
   }
-  package { "svn":
-    ensure => "present",
-  }
-  package { "sqlite3":
-    ensure => "present",
-  }
+#  package { "svn": # not found
+#    ensure => "present",
+#  }
+#  package { "sqlite3": # not found
+#    ensure => "present",
+#  }
   package { "sendmail":
     ensure => "present",
   }
-  package { "php5-cgi":
-    ensure => "present",
-  }
-# probably in php core
+#  package { "php5-cgi": # not found
+#    ensure => "present",
+#  }
+# probably in php core (actually in pdo)
 #  package { "php5-sqlite":
 #    ensure => "present",
 #  }
+  package { "php-pdo":
+    ensure => "present",
+  }
+  package { "php-gd":
+    ensure => "present",
+  }
 
   class { "pear":
     package => "php-pear", # this installs php53 and php53-cli
