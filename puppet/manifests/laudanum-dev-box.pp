@@ -53,7 +53,49 @@ class laudanum_dev_box {
     host     => 'localhost',
     grant    => ['all'],
   }
+
+}
+
+
+class laudanum_drupal7_box {
+  package { "bzr":
+    ensure => "present",
+  }
+  package { "svn":
+    ensure => "present",
+  }
+  package { "sqlite3":
+    ensure => "present",
+  }
+  package { "sendmail":
+    ensure => "present",
+  }
+  package { "php5-cgi":
+    ensure => "present",
+  }
+# probably in php core
+#  package { "php5-sqlite":
+#    ensure => "present",
+#  }
+
+  class { "pear":
+    package => "php-pear", # this installs php53 and php53-cli
+  }
+
+  # If no version number is supplied, the latest stable release will be
+  # installed. In this case, upgrade PEAR to 1.9.2+ so it can use
+  # pear.drush.org without complaint.
+  pear::package { "PEAR": }
+  pear::package { "Console_Table": }
+
+  # Version numbers are supported.
+  pear::package { "drush":
+    version => "6.0.0",
+    repository => "pear.drush.org",
+  }  
+
 }
 
 
 include laudanum_dev_box
+include laudanum_drupal7_box
