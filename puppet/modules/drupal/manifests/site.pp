@@ -51,9 +51,10 @@ define drupal::site(
   }
 
   apache::vhost { $primary_url:
-    documentroot => $drupal_root,
-    port         => 80,
-    aliases      => $aliases
+    docroot       => $drupal_root,
+    port          => 80,
+    serveraliases => $aliases,
+    serveradmin   =>  'admin@example.com',
   }
 
 }

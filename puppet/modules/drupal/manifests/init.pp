@@ -41,7 +41,7 @@ class drupal::base {
 }
 
 class drupal {
-  include php
+#  include php
   
   include drupal::params, drupal::base
 }

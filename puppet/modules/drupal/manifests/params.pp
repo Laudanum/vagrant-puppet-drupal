@@ -1,7 +1,8 @@
 
 class drupal::params(
-  $file_owner	    = 'drupal',
-  $file_group	    = 'drupal',
+  $file_owner	    = 'vagrant',
+  $file_group	    = 'vagrant',
+  $install_path		= '/srv/www/sites/',
 ) {
 
 }
