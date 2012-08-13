@@ -1,5 +1,6 @@
+$dev_domains = [ "laudanum.net", ] 
+
 class laudanum_dev_box {
-  $domain = [ "laudanum.net", ] 
 
   user { "apache": 
     ensure => "present", 
@@ -14,10 +15,10 @@ class laudanum_dev_box {
     ensure => "present",
   }
 
-  host { "host-local.${domain[0]}":
+  host { "host-local.${dev_domains[0]}":
     ensure => "present",
     ip     => "127.0.0.1",
-    host_aliases => [ "local.${domain[0]}", "localhost", "vagrant-centos-6.localdomain"],
+    host_aliases => [ "local.${dev_domains[0]}", "localhost", "vagrant-centos-6.localdomain"],
   }
 
 # Create necessary parent directories.
@@ -25,7 +26,7 @@ class laudanum_dev_box {
       ensure => directory,
       mode => 644,
   }
-  file {"/srv/www/${domain[0]}":
+  file {"/srv/www/${dev_domains[0]}":
       ensure => directory,
       mode   => 644,
   }
@@ -33,27 +34,53 @@ class laudanum_dev_box {
   class {'apache': }
   class {'apache::php': }
 
-  apache::vhost { "local.${domain[0]}": 
-    vhost_name	=> "local.${domain[0]}",
-    docroot	=> "/srv/www/${domain[0]}/public/",
-    serveradmin => "mr.snow@houseoflaudanum.com",
-    port	=> '80',
-    priority	=> '10',
-    logroot	=> "/srv/www/${domain[0]}/logs/",
-    require	=> File["/srv/www/${domain[0]}"],
-  }
+#  apache::vhost { "local.${dev_domains[0]}": 
+#    vhost_name	=> "local.${dev_domains[0]}",
+#    docroot	=> "/srv/www/${dev_domains[0]}/public/",
+#    serveradmin => "mr.snow@houseoflaudanum.com",
+#    port	=> '80',
+#    priority	=> '10',
+#    logroot	=> "/srv/www/${dev_domains[0]}/logs/",
+#    require	=> File["/srv/www/${dev_domains[0]}"],
+#  }
   class { 'mysql': }
   class { 'mysql::server':
     config_hash => { 'root_password' => 'foo' }
   }
 
-  mysql::db { "${domain[0]}_local":
+  mysql::db { "${dev_domains[0]}_local":
     user     => 'myuser',
     password => 'mypass',
     host     => 'localhost',
     grant    => ['all'],
   }
 
+# add githubs host key so we don't get warnings
+  file {"/home/vagrant/.ssh/known_hosts":
+    ensure => file,
+    source => 'puppet:///modules/laudanum/known_hosts',
+  }
+
+# generate a host key for us to use at github
+# either we've provided one at ../ssh-keys/github.rsa
+# or we're going to create one
+  file {"/home/vagrant/.ssh/github.rsa":
+    ensure => file,
+    source => '/ssh-config/github.rsa',
+  }
+  file {"/home/vagrant/.ssh/github.rsa.pub":
+    ensure => file,
+    source => '/ssh-config/github.rsa.pub',
+  }
+  exec { "github_ssh_keys":
+    command => "/usr/bin/ssh-keygen -f /home/vagrant/.ssh/github.rsa",
+    creates => "/home/vagrant/.ssh/github.rsa"
+  }
+  file {"/home/vagrant/.ssh/config":
+    ensure => file,
+    source => '/ssh-config/config',
+    mode => 600,
+  }
 }
 
 
@@ -91,7 +118,22 @@ class laudanum_drupal7_box {
   pear::package { "drush":
     version => "6.0.0",
     repository => "pear.drush.org",
-  }  
+  }
+
+  class { 'drupal': }
+#   $databases,
+#   $drupal_root,
+#   $conf = { },
+#   $url = null,
+#   $aliases = []
+
+  drupal::site { "${dev_domains[0]}":
+    databases   => "${dev_domains[0]}_local",
+    drupal_root => "/srv/www/sites/${dev_domains[0]}",
+    conf        => {},
+    url         => "local.${dev_domains[0]}",
+    aliases     => [],
+  }
 
 }
 

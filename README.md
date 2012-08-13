@@ -29,6 +29,10 @@
 ##Sources##
 https://github.com/drupalboxes/drupal-puppet/tree/master/drupal
 
+##TODO##
+*   Add github to known_hosts
+*   Solve github ssh keys (share with host, copy to host, push vagrants to github)
+
 ##Installing Drush##
 
 * ~~Squid for caching make installs~~ (Drush 5.x does this internally)
