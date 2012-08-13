@@ -1,5 +1,15 @@
 #Drupal on Vagrant#
 
+##Usage##
+
+1.   Clone this repo
+1.   Pull in the submodules
+     `$ git submodule init
+     $  git submodule update`
+1.   Bring up Vagrant
+     `$ vagrant up`
+
+
 ##Aims##
 
 * Provide a standardised development instance
@@ -10,7 +20,7 @@
 
 ##Installing Drush##
 
-* ~~Squid for caching make installs~~ (Drush 5 caches internally)
+* ~~Squid for caching make installs~~ (Drush 5.x does this internally)
 * bzr and svn because quick drupal likes it
 * Sqlite3 so that quick drupal can make dbs easily
 * Mail for mailing messages
