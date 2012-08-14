@@ -142,7 +142,6 @@ class laudanum_drupal7_box {
     ensure => "present",
   }
 
-  class { "apache::php": }
   class { "pear":
     package => "php-pear", # this installs php53 and php53-cli
   }
