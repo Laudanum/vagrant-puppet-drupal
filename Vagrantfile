@@ -17,7 +17,7 @@ Vagrant::Config.run do |config|
 
   # fix hang after `Waiting for VM to boot. This can take a few minutes.`
   # https://github.com/mitchellh/vagrant/issues/455#issuecomment-1740526
-  config.ssh.max_tries = 150
+  config.ssh.max_tries = 250
   config.vm.customize ["modifyvm", :id, "--rtcuseutc", "on"]
 
   # Boot with a GUI so you can see the screen. (Default is headless)
