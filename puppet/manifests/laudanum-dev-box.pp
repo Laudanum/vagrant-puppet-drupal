@@ -101,7 +101,8 @@ class laudanum_dev_box {
   # exec { "srv_www_policy":
   #   command => "semanage fcontext -a -t httpd_sys_content_t /srv/www &&  restorecon -v /srv/www",
   # }
-
+  
+  # http://www.cyberciti.biz/faq/howto-disable-httpd-selinux-security-protection/#comments
   # disable selinux for this boot
   exec { "selinux_off":
     command => "/usr/sbin/setenforce 0",
