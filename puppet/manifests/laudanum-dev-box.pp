@@ -1,6 +1,12 @@
 $dev_domains = [ "laudanum.net", "artlib.com.au", ] 
 
 define create_drupal_site {
+# apache::vhosts provides this
+#  file {"/srv/www/${name}":
+#      ensure => directory,
+#      mode   => 644,
+#  }
+
   drupal::site { "${name}":
     databases   => "${name}_local",
     drupal_root => "/srv/www/${name}",
@@ -36,10 +42,6 @@ class laudanum_dev_box {
   file {["/srv", "/srv/www"]:
       ensure => directory,
       mode => 644,
-  }
-  file {"/srv/www/${dev_domains[0]}":
-      ensure => directory,
-      mode   => 644,
   }
 
   class {'apache': }
