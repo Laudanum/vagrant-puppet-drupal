@@ -92,6 +92,25 @@ class laudanum_dev_box {
     source => '/ssh-config/config',
     mode => 600,
   }
+
+  # centos policy tools
+  # package { "policycoreutils-python":
+  #  ensure => "present",
+  # }
+  # reset the policy on /srv/www
+  # exec { "srv_www_policy":
+  #   command => "semanage fcontext -a -t httpd_sys_content_t /srv/www &&  restorecon -v /srv/www",
+  # }
+
+  # disable selinux for this boot
+  exec { "selinux_off":
+    command => "/usr/sbin/setenforce 0",
+  }
+  # and disable it permanently
+  file { "/etc/selinux/config":
+    ensure => "file",
+    source => "puppet:///modules/laudanum/selinux_config",
+  }
 }
 
 
