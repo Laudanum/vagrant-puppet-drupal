@@ -104,6 +104,7 @@ class laudanum_dev_box {
   #   command => "semanage fcontext -a -t httpd_sys_content_t /srv/www &&  restorecon -v /srv/www",
   # }
 
+  # http://www.cyberciti.biz/faq/howto-disable-httpd-selinux-security-protection/#comments
   # disable selinux for this boot
   exec { "selinux_off":
     command => "/usr/sbin/setenforce 0",
@@ -136,6 +137,7 @@ class laudanum_drupal7_box {
     ensure => "present",
   }
 
+  class { "apache::php": }
   class { "pear":
     package => "php-pear", # this installs php53 and php53-cli
   }

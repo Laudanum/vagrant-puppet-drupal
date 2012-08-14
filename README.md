@@ -34,7 +34,11 @@ https://github.com/drupalboxes/drupal-puppet/tree/master/drupal
 ##TODO##
 *   ~~Add github to known_hosts~~
 *   ~~Solve github ssh keys (share with host, copy to host, push vagrants to github)~~
-*   
+*   Add hosts to /etc/hosts (on Vagrant guest)
+*   Look at Vagrant hosts plugin (for host?)
+*   Enable mod_php
+*   Install lynx
+*   Write Vagrant plugin for git / drush.
 
 ##Installing Drush##
 
