@@ -49,7 +49,7 @@ class laudanum_dev_box {
 # add php.conf to apache so that php is handled properly
   file {"/etc/httpd/conf.d/php.conf":
     ensure => file,
-    source => "puppet:///modules/laudanum/known_hosts",
+    source => "puppet:///modules/laudanum/php.conf",
   }
 
 #  apache::vhost { "local.${dev_domains[0]}": 
