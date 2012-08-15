@@ -7,8 +7,15 @@ define create_drupal_site {
 #      mode   => 644,
 #  }
 
+  mysql::db { "${name}_local":
+    user     => ${name},
+    password => ${name},
+    host     => 'localhost',
+    grant    => ['all'],
+  }
+
   drupal::site { "${name}":
-    databases   => "${name}_local",
+    databases   => { "${name}_local" => "mysqli://${name}:${name}@localhost/${name}_local" },
     drupal_root => "/srv/www/${name}",
     conf        => {},
     url         => "local.${name}",
@@ -64,13 +71,6 @@ class laudanum_dev_box {
   class { 'mysql': }
   class { 'mysql::server':
     config_hash => { 'root_password' => 'foo' }
-  }
-
-  mysql::db { "${dev_domains[0]}_local":
-    user     => 'myuser',
-    password => 'mypass',
-    host     => 'localhost',
-    grant    => ['all'],
   }
 
 # add githubs host key so we don't get warnings
