@@ -16,6 +16,22 @@
      `$ vagrant up`
 
 
+##Updating submodules##
+1.  Init submodules & update
+      `$ git submodule init
+      $ git submodule update`
+1.  Change directory to submodule
+    `$ cd puppet/modules/apache`
+1.  Switch branch to master (submodules branch)
+    `$ git checkout master`
+1.  Pull in changes
+    `$ git pull`
+1.  Change directory to parent project
+    `$ cd ../..`
+1.  Commit
+    `$ git commit -am "Update apache submodule."`
+
+    
 ##Aims##
 
 * Provide a standardised development instance
