@@ -15,6 +15,14 @@
 1.   Bring up Vagrant
      `$ vagrant up`
 
+##Troubleshooting##
+1.  Missing ruby libs (stdlib)
+    Apache::vhosts can't find validate_re
+    https://github.com/knowshantanu/puppetmod-uabopennebula/issues/11
+    Comment out that line in modules/apache/manifests/vhosts.pp
+1.  Permission issues running drush or apahce
+    Remount /srv/www rewrite and nobody:nobody
+    `umount /srv/www && mount -t vboxsf -o umask=000,dmode=777,fmode=666,gid=99,uid=99 sites /srv/www`
 
 ##Updating submodules##
 1.  Init submodules & update
@@ -30,8 +38,9 @@
     `$ cd ../..`
 1.  Commit
     `$ git commit -am "Update apache submodule."`
+1.  Restore any pre pull fixes you may have
+    https://github.com/knowshantanu/puppetmod-uabopennebula/issues/11
 
-    
 ##Aims##
 
 * Provide a standardised development instance

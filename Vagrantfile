@@ -50,7 +50,8 @@ Vagrant::Config.run do |config|
   # an identifier, the second is the path on the guest to mount the
   # folder, and the third is the path on the host to the actual folder.
   # config.vm.share_folder "v-data", "/vagrant_data", "../data"
-  config.vm.share_folder "sites", "/srv/www", "../sites", :owner => "apache", :create => true
+
+  config.vm.share_folder "sites", "/srv/www", "../sites", :owner => "nobody", :extra => 'dmode=770,fmode=770', :create => true
   config.vm.share_folder "ssh-config", "/ssh-config", "../ssh-config"
 
   # Install Puppet via puppet labs yum repo

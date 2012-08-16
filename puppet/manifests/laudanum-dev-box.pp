@@ -1,4 +1,4 @@
-$dev_domains = [ "laudanum.net", "artlib.com.au", ] 
+$dev_domains = [ "sturtassociates.com.au", "artlib.com.au", ] 
 
 define create_drupal_site {
 # apache::vhosts provides this
@@ -7,17 +7,25 @@ define create_drupal_site {
 #      mode   => 644,
 #  }
 
-  mysql::db { "${name}_local":
-    user     => "${name}",
-    password => "${name}",
-    host     => 'localhost',
-    grant    => ['all'],
+# cant' use vagrant (as mysql complains about duplicate users)
+#  mysql::db { "${name}_local":
+#    user     => "${name}",
+#    password => "${name}",
+#    host     => 'localhost',
+#    grant    => ['all'],
+#  }
+  database { "${name}_local":
+      ensure  => 'present',
+      charset => 'utf8',
+  }
+  database_grant { "vagrant@localhost/${name}_local":
+    privileges => ['all'] ,
   }
 
 # @TODO currently drupal::site overwrites settings. thats bad
 # @TODO currently the database definition is really really useless. thats bad
   drupal::site { "${name}":
-    databases   => { "${name}_local" => "mysqli://${name}:${name}@localhost/${name}_local" },
+    databases   => { "${name}_local" => "mysqli://vagrant:vagrant@localhost/${name}_local" },
     drupal_root => "/srv/www/${name}",
     conf        => {},
     url         => "local.${name}",
@@ -81,6 +89,9 @@ class laudanum_dev_box {
   class { 'mysql::server':
     config_hash => { 'root_password' => 'foo' }
   }
+  database_user { 'vagrant@localhost':
+    password_hash => mysql_password('vagrant')
+  }
   package { "php-mysql":
     ensure => "present",
   }
@@ -130,6 +141,8 @@ class laudanum_dev_box {
   file { "/etc/selinux/config":
     ensure => "file",
     source => "puppet:///modules/laudanum/selinux_config",
+    owner => "root",
+    group => "root",
   }
 }
 
