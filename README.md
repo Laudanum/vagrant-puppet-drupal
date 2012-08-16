@@ -22,7 +22,13 @@
     Comment out that line in modules/apache/manifests/vhosts.pp
 1.  Permission issues running drush or apahce
     Remount /srv/www rewrite and nobody:nobody
-    `umount /srv/www && mount -t vboxsf -o umask=000,dmode=777,fmode=666,gid=99,uid=99 sites /srv/www`
+    `sudo umount /srv/www && sudo mount -t vboxsf -o umask=000,dmode=777,fmode=666,gid=99,uid=99 sites /srv/www`
+1.  Install guest additions
+    `$ wget http://download.virtualbox.org/virtualbox/4.1.18/VBoxGuestAdditions_4.1.18.iso`
+    `$ sudo mount -o loop VBoxGuestAdditions_4.1.18.iso /media`
+    `$ sudo /media/VBoxLinuxAdditions.run`
+1.  If youre on Linux or Mac and httpd is running really slow make sure to switch to nfs for shares in Vagrantfile
+
 
 ##Updating submodules##
 1.  Init submodules & update

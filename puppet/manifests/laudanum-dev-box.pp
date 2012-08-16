@@ -36,6 +36,14 @@ define create_drupal_site {
 
 class laudanum_dev_box {
 
+  case $operatingsystem {
+    ubuntu: { 
+      exec { "apt_get_update":
+        command => "/usr/bin/apt-get update",
+      }
+    }
+  }
+
   user { "apache": 
     ensure => "present", 
   }
@@ -61,19 +69,24 @@ class laudanum_dev_box {
 # Create necessary parent directories.
   file {["/srv", "/srv/www"]:
       ensure => directory,
-      mode => 644,
+#      mode => 644,
   }
 
   class {'apache': }
   class {'apache::php': }
-  package { "mod-php": # why doesn't apache::php do this?
-    ensure => "present",
-  }
+  case $operatingsystem {
+    centos: { 
+      package { "mod-php": # why doesn't apache::php do this?
+        ensure => "present",
+      }
 # add php.conf to apache so that php is handled properly
-  file {"/etc/httpd/conf.d/php.conf":
-    ensure => file,
-    source => "puppet:///modules/laudanum/php.conf",
+      file {"/etc/httpd/conf.d/php.conf":
+        ensure => file,
+        source => "puppet:///modules/laudanum/php.conf",
+      }
+    }
   }
+
 
 #  apache::vhost { "local.${dev_domains[0]}": 
 #    vhost_name	=> "local.${dev_domains[0]}",
@@ -91,6 +104,15 @@ class laudanum_dev_box {
   }
   database_user { 'vagrant@localhost':
     password_hash => mysql_password('vagrant')
+  }
+  
+  case $operatingsystem {
+      centos: { $php_mysql = "php-mysql", $apache = 'apache' }
+      redhat: { $php_mysql = "php-mysql", $apache = 'apache' }
+      debian: { $php_mysql = "php5-mysql", $apache = 'apache2' }
+      ubuntu: { $php_mysql = "php5-mysql", $apache = 'apache2' }
+      default: { fail("Unrecognized operating system for webserver") }
+      # "fail" is a function. We'll get to those later.
   }
   package { "php-mysql":
     ensure => "present",
@@ -132,17 +154,21 @@ class laudanum_dev_box {
   #   command => "semanage fcontext -a -t httpd_sys_content_t /srv/www &&  restorecon -v /srv/www",
   # }
 
-  # http://www.cyberciti.biz/faq/howto-disable-httpd-selinux-security-protection/#comments
-  # disable selinux for this boot
-  exec { "selinux_off":
-    command => "/usr/sbin/setenforce 0",
-  }
-  # and disable it permanently
-  file { "/etc/selinux/config":
-    ensure => "file",
-    source => "puppet:///modules/laudanum/selinux_config",
-    owner => "root",
-    group => "root",
+  case $operatingsystem {
+    centos: { 
+# http://www.cyberciti.biz/faq/howto-disable-httpd-selinux-security-protection/#comments
+# disable selinux for this boot
+      exec { "selinux_off":
+        command => "/usr/sbin/setenforce 0",
+      }
+      # and disable it permanently
+      file { "/etc/selinux/config":
+        ensure => "file",
+        source => "puppet:///modules/laudanum/selinux_config",
+        owner => "root",
+        group => "root",
+      }
+    }
   }
 }
 
@@ -163,11 +189,25 @@ class laudanum_drupal7_box {
   package { "php-pdo":  # enables Sqlite (Quick Drupal requirement)
     ensure => "present",
   }
-  package { "php-gd":
+  case $operatingsystem {
+      centos: { $php_gd = "php-gd", $apache = 'apache' }
+      redhat: { $php_gd = "php-gd", $apache = 'apache' }
+      debian: { $php_gd = "php-gd", $apache = 'apache2' }
+      ubuntu: { $php_gd = "php-gd", $apache = 'apache2' }
+      default: { fail("Unrecognized operating system for webserver") }
+      # "fail" is a function. We'll get to those later.
+  }
+
+  package { $php_gd:
     ensure => "present",
   }
-  package { "php-xml":  # enables DOM (Drupal Core requirement)
-    ensure => "present",
+
+  case $operatingsystem {
+    centos: { 
+      package { "php-xml":  # enables DOM (Drupal Core requirement)
+        ensure => "present",
+      }
+    }
   }
 
   class { "pear":
@@ -179,6 +219,9 @@ class laudanum_drupal7_box {
   # pear.drush.org without complaint.
   pear::package { "PEAR": }
   pear::package { "Console_Table": }
+
+  # $ sudo pear channel-discover pear.drush.org
+  # $ sudo pear install drush/drush-6.0.0
 
   # Version numbers are supported.
   pear::package { "drush":

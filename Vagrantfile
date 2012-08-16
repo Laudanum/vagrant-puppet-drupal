@@ -7,18 +7,20 @@ Vagrant::Config.run do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "centos6"
+  config.vm.box = "lucid32"
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
-  config.vm.box_url = "https://vagrant-centos-6.s3.amazonaws.com/centos-6.box"
+  # config.vm.box_url = "https://vagrant-centos-6.s3.amazonaws.com/centos-6.box"
   # Fix the os type so that it doesn't complain about the kernel.
-  config.vm.customize ["modifyvm", :id, "--ostype", "RedHat_64"]
+  # config.vm.customize ["modifyvm", :id, "--ostype", "RedHat_64"]
 
   # fix hang after `Waiting for VM to boot. This can take a few minutes.`
   # https://github.com/mitchellh/vagrant/issues/455#issuecomment-1740526
-  config.ssh.max_tries = 250
+  config.ssh.max_tries = 150
   config.vm.customize ["modifyvm", :id, "--rtcuseutc", "on"]
+  # config.vm.customize ["modifyvm", :id, "--memory", "1536", "--cpus", "2", "--name", "Laudanum dev box"]
+  config.vm.customize ["modifyvm", :id, "--memory", "1536", "--name", "Laudanum dev box Ubuntu"]
   # config.vm.memory_size = 2048
   # config.vm.cpu_count = 2
 
@@ -38,21 +40,26 @@ Vagrant::Config.run do |config|
 
   # Forward a port from the guest to the host, which allows for outside
   # computers to access the VM, whereas host only networking does not.
-  config.vm.forward_port 80, 7840
+  config.vm.forward_port 80, 7841
 
   # Install Puppet
   # config.vm.provision :shell, :inline => "sudo yum -y install puppet"
 
   # Install Puppet via puppet labs yum repo
-  config.vm.provision :shell, :path => "install-puppet.sh"
+  # config.vm.provision :shell, :path => "install-puppet.sh"
 
   # Share an additional folder to the guest VM. The first argument is
   # an identifier, the second is the path on the guest to mount the
   # folder, and the third is the path on the host to the actual folder.
   # config.vm.share_folder "v-data", "/vagrant_data", "../data"
 
-  config.vm.share_folder "sites", "/srv/www", "../sites", :owner => "nobody", :extra => 'dmode=770,fmode=770', :create => true
   config.vm.share_folder "ssh-config", "/ssh-config", "../ssh-config"
+  # windows -- use the following line
+  # config.vm.share_folder "sites", "/srv/www", "../sites", :owner => "nobody", :extra => 'dmode=770,fmode=770', :create => true
+  
+  # linux / mac -- use the following 2 lines (because on these systems vboxsf is sooooo sloooow)
+  config.vm.network :hostonly, "192.168.33.10"
+  config.vm.share_folder "sites", "/srv/www", "../sites", :map_gid => "1003", :map_uid => "1001", :extra => 'dmode=770,fmode=770', :nfs => true, :create => true
 
   # Install Puppet via puppet labs yum repo
 
