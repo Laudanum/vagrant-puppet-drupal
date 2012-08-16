@@ -14,6 +14,8 @@ define create_drupal_site {
     grant    => ['all'],
   }
 
+# @TODO currently drupal::site overwrites settings. thats bad
+# @TODO currently the database definition is really really useless. thats bad
   drupal::site { "${name}":
     databases   => { "${name}_local" => "mysqli://${name}:${name}@localhost/${name}_local" },
     drupal_root => "/srv/www/${name}",
@@ -38,6 +40,9 @@ class laudanum_dev_box {
   package { "wget":
     ensure => "present",
   }
+  package { "lynx":
+    ensure => "present",
+  }
 
   host { "host-local.${dev_domains[0]}":
     ensure => "present",
@@ -53,6 +58,9 @@ class laudanum_dev_box {
 
   class {'apache': }
   class {'apache::php': }
+  package { "mod-php": # why doesn't apache::php do this?
+    ensure => "present",
+  }
 # add php.conf to apache so that php is handled properly
   file {"/etc/httpd/conf.d/php.conf":
     ensure => file,
@@ -68,9 +76,13 @@ class laudanum_dev_box {
 #    logroot	=> "/srv/www/${dev_domains[0]}/logs/",
 #    require	=> File["/srv/www/${dev_domains[0]}"],
 #  }
+
   class { 'mysql': }
   class { 'mysql::server':
     config_hash => { 'root_password' => 'foo' }
+  }
+  package { "php-mysql":
+    ensure => "present",
   }
 
 # add githubs host key so we don't get warnings
@@ -96,7 +108,7 @@ class laudanum_dev_box {
   }
   file {"/home/vagrant/.ssh/config":
     ensure => file,
-    source => '/ssh-config/config',
+    source => 'puppet:///modules/laudanum/ssh-config',
     mode => 600,
   }
 
@@ -124,6 +136,9 @@ class laudanum_dev_box {
 
 class laudanum_drupal7_box {
   package { "bzr":
+    ensure => "present",
+  }
+  package { "unzip":
     ensure => "present",
   }
   package { "subversion":

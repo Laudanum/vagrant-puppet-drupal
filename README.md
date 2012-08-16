@@ -36,9 +36,32 @@ https://github.com/drupalboxes/drupal-puppet/tree/master/drupal
 *   ~~Solve github ssh keys (share with host, copy to host, push vagrants to github)~~
 *   Add hosts to /etc/hosts (on Vagrant guest)
 *   Look at Vagrant hosts plugin (for host?)
-*   Enable mod_php
-*   Install lynx
+*   ~~Enable mod_php~~ added package (unnecessary?) and php.conf
+*   ~~Install lynx~~
 *   Write Vagrant plugin for git / drush.
+*   settings.php for Drupal isn't working
+`$databases = array (
+  'default' =>
+  array (
+    'default' =>
+    array (
+      'database' => 'spacetimeconcerto.com_local',
+      'username' => 'vagrant',
+      'password' => 'vagrant',
+      'host' => 'localhost',
+      'port' => '',
+      'driver' => 'mysql',
+      'prefix' => '',
+    ),
+  ),
+);
+`
+*   ~~Install php-mysql~~
+*   AllowOverride all for our vhosts (where is this coming from? apache via drupal?)
+*   ~~Permissions on `files` are bad~~ changed owner to apache in vagrant file
+*   Drush aliases (for sync from staging or production and sanitise)
+*   ~~.ssh/config is missing~~
+*  	install unzip (for drush)
 
 ##Installing Drush##
 

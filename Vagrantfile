@@ -19,6 +19,8 @@ Vagrant::Config.run do |config|
   # https://github.com/mitchellh/vagrant/issues/455#issuecomment-1740526
   config.ssh.max_tries = 250
   config.vm.customize ["modifyvm", :id, "--rtcuseutc", "on"]
+  # config.vm.memory_size = 2048
+  # config.vm.cpu_count = 2
 
   # Boot with a GUI so you can see the screen. (Default is headless)
   # config.vm.boot_mode = :gui
@@ -48,7 +50,7 @@ Vagrant::Config.run do |config|
   # an identifier, the second is the path on the guest to mount the
   # folder, and the third is the path on the host to the actual folder.
   # config.vm.share_folder "v-data", "/vagrant_data", "../data"
-  config.vm.share_folder "sites", "/srv/www", "../sites"
+  config.vm.share_folder "sites", "/srv/www", "../sites", :owner => "apache", :create => true
   config.vm.share_folder "ssh-config", "/ssh-config", "../ssh-config"
 
   # Install Puppet via puppet labs yum repo
