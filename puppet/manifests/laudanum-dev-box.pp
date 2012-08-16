@@ -8,8 +8,8 @@ define create_drupal_site {
 #  }
 
   mysql::db { "${name}_local":
-    user     => ${name},
-    password => ${name},
+    user     => "${name}",
+    password => "${name}",
     host     => 'localhost',
     grant    => ['all'],
   }
