@@ -190,10 +190,10 @@ class laudanum_drupal7_box {
     ensure => "present",
   }
   case $operatingsystem {
-      centos: { $php_gd = "php-gd", $apache = 'apache' }
-      redhat: { $php_gd = "php-gd", $apache = 'apache' }
-      debian: { $php_gd = "php-gd", $apache = 'apache2' }
-      ubuntu: { $php_gd = "php-gd", $apache = 'apache2' }
+      centos: { $php_gd = "php-gd" }
+      redhat: { $php_gd = "php-gd" }
+      debian: { $php_gd = "php-gd" }
+      ubuntu: { $php_gd = "php-gd" }
       default: { fail("Unrecognized operating system for webserver") }
       # "fail" is a function. We'll get to those later.
   }
