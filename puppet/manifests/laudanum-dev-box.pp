@@ -107,14 +107,14 @@ class laudanum_dev_box {
   }
   
   case $operatingsystem {
-      centos: { $php_mysql = "php-mysql", $apache = 'apache' }
-      redhat: { $php_mysql = "php-mysql", $apache = 'apache' }
-      debian: { $php_mysql = "php5-mysql", $apache = 'apache2' }
-      ubuntu: { $php_mysql = "php5-mysql", $apache = 'apache2' }
+      centos: { $php_mysql = "php-mysql" }
+      redhat: { $php_mysql = "php-mysql" }
+      debian: { $php_mysql = "php5-mysql" }
+      ubuntu: { $php_mysql = "php5-mysql" }
       default: { fail("Unrecognized operating system for webserver") }
       # "fail" is a function. We'll get to those later.
   }
-  package { "php-mysql":
+  package { $php_mysql:
     ensure => "present",
   }
 
