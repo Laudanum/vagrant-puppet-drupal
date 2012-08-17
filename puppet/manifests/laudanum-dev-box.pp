@@ -198,8 +198,8 @@ class laudanum_drupal7_box {
   case $operatingsystem {
       centos: { $php_pdo = "php-pdo" }
       redhat: { $php_pdo = "php-pdo" }
-      debian: { $php_pdo = "php5-pdo" }
-      ubuntu: { $php_pdo = "php5-pdo" }
+      debian: { $php_pdo = "php5-sqlite" }
+      ubuntu: { $php_pdo = "php5-sqlite" }
       default: { fail("Unrecognized operating system for webserver") }
       # "fail" is a function. We'll get to those later.
   }
