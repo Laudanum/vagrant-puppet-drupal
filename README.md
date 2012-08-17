@@ -129,3 +129,11 @@ Named or all features
 *	Could use pm-list --type=module --status=enabled (but its slow)
 
 ###Connect to staging and pull in a sanitised database###
+
+
+
+##Missing in ubuntu branch##
+* Apt get update needs to be first
+* Drush pear channel not discovering
+  sudo /usr/bin/pear channel-discover pear.drush.org
+  sudo pear install drush/drush-6.0.0

@@ -186,18 +186,27 @@ class laudanum_drupal7_box {
   package { "sendmail":
     ensure => "present",
   }
-  package { "php-pdo":  # enables Sqlite (Quick Drupal requirement)
-    ensure => "present",
-  }
+
   case $operatingsystem {
-      centos: { $php_gd = "php-gd" }
-      redhat: { $php_gd = "php-gd" }
-      debian: { $php_gd = "php-gd" }
-      ubuntu: { $php_gd = "php-gd" }
+      centos: { $php_pdo = "php-pdo" }
+      redhat: { $php_pdo = "php-pdo" }
+      debian: { $php_pdo = "php-pdo5" }
+      ubuntu: { $php_pdo = "php-pdo5" }
       default: { fail("Unrecognized operating system for webserver") }
       # "fail" is a function. We'll get to those later.
   }
+  package { $php_pdo:  # enables Sqlite (Quick Drupal requirement)
+    ensure => "present",
+  }
 
+  case $operatingsystem {
+      centos: { $php_gd = "php-gd" }
+      redhat: { $php_gd = "php-gd" }
+      debian: { $php_gd = "php-gd5" }
+      ubuntu: { $php_gd = "php-gd5" }
+      default: { fail("Unrecognized operating system for webserver") }
+      # "fail" is a function. We'll get to those later.
+  }
   package { $php_gd:
     ensure => "present",
   }
