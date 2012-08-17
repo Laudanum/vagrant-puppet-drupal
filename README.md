@@ -87,6 +87,9 @@ https://github.com/drupalboxes/drupal-puppet/tree/master/drupal
   ),
 );
 `
+*   Create vagrant user in MySql
+    CREATE USER 'vagrant'@'localhost' IDENTIFIED BY 'vagrant';
+    GRANT ALL ON *.* TO 'vagrant'@'localhost'; FLUSH PRIVILEGES;
 *   ~~Install php-mysql~~
 *   AllowOverride all for our vhosts (where is this coming from? apache via drupal?)
 *   ~~Permissions on `files` are bad~~ changed owner to apache in vagrant file

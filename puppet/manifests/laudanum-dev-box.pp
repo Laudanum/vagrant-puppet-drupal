@@ -50,7 +50,15 @@ class laudanum_dev_box {
   user { "puppet": 
     ensure => "present", 
   }
-  package { "git":
+  case $operatingsystem {
+      centos: { $git = "git" }
+      redhat: { $git = "git" }
+      debian: { $git = "git-core" }
+      ubuntu: { $git = "git-core" }
+      default: { fail("Unrecognized operating system for webserver") }
+      # "fail" is a function. We'll get to those later.
+  }
+  package { $git:
     ensure => "present",
   }
   package { "wget":
@@ -190,8 +198,8 @@ class laudanum_drupal7_box {
   case $operatingsystem {
       centos: { $php_pdo = "php-pdo" }
       redhat: { $php_pdo = "php-pdo" }
-      debian: { $php_pdo = "php-pdo5" }
-      ubuntu: { $php_pdo = "php-pdo5" }
+      debian: { $php_pdo = "php5-pdo" }
+      ubuntu: { $php_pdo = "php5-pdo" }
       default: { fail("Unrecognized operating system for webserver") }
       # "fail" is a function. We'll get to those later.
   }
@@ -202,8 +210,8 @@ class laudanum_drupal7_box {
   case $operatingsystem {
       centos: { $php_gd = "php-gd" }
       redhat: { $php_gd = "php-gd" }
-      debian: { $php_gd = "php-gd5" }
-      ubuntu: { $php_gd = "php-gd5" }
+      debian: { $php_gd = "php5-gd" }
+      ubuntu: { $php_gd = "php5-gd" }
       default: { fail("Unrecognized operating system for webserver") }
       # "fail" is a function. We'll get to those later.
   }
