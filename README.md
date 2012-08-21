@@ -140,3 +140,5 @@ Named or all features
 * Drush pear channel not discovering
   sudo /usr/bin/pear channel-discover pear.drush.org
   sudo pear install drush/drush-6.0.0
+* Enable apache rewriting
+  sudo a2enmod rewrite && sudo service apache2 reload 
