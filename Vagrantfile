@@ -12,6 +12,8 @@ Vagrant::Config.run do |config|
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
   # config.vm.box_url = "https://vagrant-centos-6.s3.amazonaws.com/centos-6.box"
+  config.vm.box_url ="http://files.vagrantup.com/lucid32.box"
+
   # Fix the os type so that it doesn't complain about the kernel.
   # config.vm.customize ["modifyvm", :id, "--ostype", "RedHat_64"]
 
