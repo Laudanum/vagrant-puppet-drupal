@@ -28,7 +28,8 @@
     `$ sudo mount -o loop VBoxGuestAdditions_4.1.18.iso /media`
     `$ sudo /media/VBoxLinuxAdditions.run`
 1.  If youre on Linux or Mac and httpd is running really slow make sure to switch to nfs for shares in Vagrantfile
-
+1.  Can't log in (to Drupal)
+    `$ sudo a2enmod rewrite && sudo service apache2 reload`
 
 ##Updating submodules##
 1.  Init submodules & update
