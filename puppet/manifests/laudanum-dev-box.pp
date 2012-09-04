@@ -21,17 +21,27 @@ define create_drupal_site {
   database_grant { "vagrant@localhost/${name}_local":
     privileges => ['all'] ,
   }
-
+  
 # @TODO currently drupal::site overwrites settings. thats bad
-# @TODO currently the database definition is really really useless. thats bad
   drupal::site { "${name}":
-    databases   => { "${name}_local" => "mysqli://vagrant:vagrant@localhost/${name}_local" },
+    databases => { 
+      "default" => { 
+        "default" => { 
+          database  => "${name}_local", 
+          username  => 'vagrant', 
+          password => 'vagrant', 
+          host => 'localhost', 
+          port => '', 
+          driver => 'mysql', 
+          prefix => ''
+        }
+      }
+    },
     drupal_root => "/srv/www/${name}",
     conf        => {},
     url         => "local.${name}",
     aliases     => [],
   }
-
 }
 
 class laudanum_dev_box {
