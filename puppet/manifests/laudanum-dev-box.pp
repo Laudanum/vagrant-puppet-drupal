@@ -101,7 +101,7 @@ class laudanum_dev_box {
   }
 
   class {'apache': }
-  class {'apache::php': }
+  class {'apache::mod::php': }
   case $operatingsystem {
     centos: { 
       package { "mod-php": # why doesn't apache::php do this?
