@@ -7,6 +7,16 @@ define create_drupal_site {
 #      mode   => 644,
 #  }
 
+  file {"/srv/www/${name}/backup":
+    ensure => directory,
+    mode   => 777,
+  }
+
+  file {"/srv/www/${name}/content":
+    ensure => directory,
+    mode   => 777,
+  }
+
 # cant' use vagrant (as mysql complains about duplicate users)
 #  mysql::db { "${name}_local":
 #    user     => "${name}",
