@@ -37,7 +37,7 @@ define create_drupal_site {
         }
       }
     },
-    drupal_root => "/srv/www/${name}",
+    drupal_root => "/srv/www/${name}/local",
     conf        => {},
     url         => "local.${name}",
     aliases     => [],
