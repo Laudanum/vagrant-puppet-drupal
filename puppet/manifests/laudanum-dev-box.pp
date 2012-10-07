@@ -1,4 +1,4 @@
-$dev_domains = [ "spacetimeconcerto.com", "sturtassociates.com.au", "artlib.com.au", ] 
+$dev_domains = [ "spacetimeconcerto.com", "sturtassociates.com.au", "artlib.com.au", "cashmereandkaye.com", ] 
 
 define create_drupal_site {
 # apache::vhosts provides this
