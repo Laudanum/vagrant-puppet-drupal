@@ -1,4 +1,4 @@
-$dev_domains = [ "spacetimeconcerto.com", "sturtassociates.com.au", "artlib.com.au", ] 
+$dev_domains = [ "spacetimeconcerto.com", "sturtassociates.com.au", "artlib.com.au", "cashmereandkaye.com", ] 
 
 define create_drupal_site {
 # apache::vhosts provides this
@@ -47,7 +47,7 @@ define create_drupal_site {
         }
       }
     },
-    drupal_root => "/srv/www/${name}",
+    drupal_root => "/srv/www/${name}/local",
     conf        => {},
     url         => "local.${name}",
     aliases     => [],

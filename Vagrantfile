@@ -22,7 +22,7 @@ Vagrant::Config.run do |config|
   config.ssh.max_tries = 150
   config.vm.customize ["modifyvm", :id, "--rtcuseutc", "on"]
   # config.vm.customize ["modifyvm", :id, "--memory", "1536", "--cpus", "2", "--name", "Laudanum dev box"]
-  config.vm.customize ["modifyvm", :id, "--memory", "1536", "--name", "Laudanum dev box Ubuntu"]
+  config.vm.customize ["modifyvm", :id, "--memory", "1024", "--name", "Laudanum dev box Ubuntu"]
   # config.vm.memory_size = 2048
   # config.vm.cpu_count = 2
 
