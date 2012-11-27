@@ -1,4 +1,4 @@
-$dev_domains = [ "spacetimeconcerto.com", "sturtassociates.com.au", "artlib.com.au", "cashmereandkaye.com", ] 
+$dev_domains = [ "supanova.org.au", "d7.supanova.org.au", "spacetimeconcerto.com", "sturtassociates.com.au", "artlib.com.au", "cashmereandkaye.com", "scanlines.net", "ailiesnow.com",  "saccid.com"] 
 
 define create_drupal_site {
 # apache::vhosts provides this
@@ -60,6 +60,7 @@ class laudanum_dev_box {
     ubuntu: { 
       exec { "apt_get_update":
         command => "/usr/bin/apt-get update",
+        require => Exec["networking_restart"],
       }
     }
   }
@@ -270,6 +271,9 @@ class laudanum_drupal7_box {
   create_drupal_site { $dev_domains: }
 }
 
+exec { "networking_restart":
+   command => "/etc/init.d/networking restart",
+}
 
 
 include laudanum_dev_box
