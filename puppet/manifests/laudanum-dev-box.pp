@@ -114,9 +114,11 @@ class laudanum_dev_box {
   package { "lynx":
     ensure => "present",
   }
-  class { solr:
-    cores => [ 'local' ]
-  }
+  # https://github.com/example42/puppet-solr
+  class { solr:  }
+  # get the right config files
+  # http://drupalcode.org/project/search_api_solr.git/blob/HEAD:/solr-conf/3.x/solrconfig.xml
+
   host { "host-local.${dev_domains[0]}":
     ensure => "present",
     ip     => "127.0.0.1",
