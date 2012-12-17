@@ -168,20 +168,15 @@ class laudanum_dev_box {
 # or we're going to create one
   file {"/home/vagrant/.ssh/github.rsa":
     ensure => file,
-    source => '/ssh-config/github.rsa',
+    source => '/ssh-config/id_rsa',
   }
   file {"/home/vagrant/.ssh/github.rsa.pub":
     ensure => file,
-    source => '/ssh-config/github.rsa.pub',
+    source => '/ssh-config/id_rsa.pub',
   }
   exec { "github_ssh_keys":
     command => "/usr/bin/ssh-keygen -f /home/vagrant/.ssh/github.rsa",
     creates => "/home/vagrant/.ssh/github.rsa"
-  }
-  file {"/home/vagrant/.ssh/config":
-    ensure => file,
-    source => 'puppet:///modules/laudanum/ssh-config',
-    mode => 600,
   }
 
   # centos policy tools
