@@ -23,11 +23,13 @@
 1.  Permission issues running drush or apahce
     Remount /srv/www rewrite and nobody:nobody
     `sudo umount /srv/www && sudo mount -t vboxsf -o umask=000,dmode=777,fmode=666,gid=99,uid=99 sites /srv/www`
-1.  Install guest additions
+1.  Install guest additions (read only problems?)
     `$ wget http://download.virtualbox.org/virtualbox/4.1.18/VBoxGuestAdditions_4.1.18.iso`
     `$ sudo mount -o loop VBoxGuestAdditions_4.1.18.iso /media`
     `$ sudo /media/VBoxLinuxAdditions.run`
 1.  If youre on Linux or Mac and httpd is running really slow make sure to switch to nfs for shares in Vagrantfile
+    On Ubuntu you'll need to install nfs-kernel-server
+    `$ sudo apt-get install nfs-kernel-server nfs-common portmap`
 1.  Can't log in (to Drupal)
     `$ sudo a2enmod rewrite && sudo service apache2 reload`
 
@@ -67,6 +69,9 @@ https://github.com/drupalboxes/drupal-puppet/tree/master/drupal
 *   ~~Add github to known_hosts~~
 *   ~~Solve github ssh keys (share with host, copy to host, push vagrants to github)~~
 *   Add hosts to /etc/hosts (on Vagrant guest)
+*   Resolve hostname
+*   sudo dpkg --configure -a
+*   missing php-mysql
 *   Look at Vagrant hosts plugin (for host?)
 *   ~~Enable mod_php~~ added package (unnecessary?) and php.conf
 *   ~~Install lynx~~

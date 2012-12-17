@@ -15,6 +15,17 @@ $dev_domains = [
   "turpincrawford.com",
   "newsouthbooks.com.au",
 ] 
+# on bruno:
+# didn't install mysql-client mysql-server php5-mysql php5-gd pear drush
+# need to install ruby, compass and zen
+# sudo apt-get install ruby libxml2-dev libxslt1-dev
+# sudo gem install compass
+# sudo gem install zen
+# ERROR:  Error installing zen:
+#  zen requires Ruby version >= 1.9.2.
+# still always need to sudo pear uninstall drush/drush on every boot
+
+$dev_domains = [ "supanova.org.au", "d7.supanova.org.au", "spacetimeconcerto.com", "sturtassociates.com.au", "artlib.com.au", "cashmereandkaye.com", "scanlines.net", "ailiesnow.com",  "saccid.com"] 
 
 define create_drupal_site {
 # apache::vhosts provides this
@@ -22,6 +33,16 @@ define create_drupal_site {
 #      ensure => directory,
 #      mode   => 644,
 #  }
+
+  file {"/srv/www/${name}/backup":
+    ensure => directory,
+    mode   => 777,
+  }
+
+  file {"/srv/www/${name}/content":
+    ensure => directory,
+    mode   => 777,
+  }
 
 # cant' use vagrant (as mysql complains about duplicate users)
 #  mysql::db { "${name}_local":
@@ -66,6 +87,7 @@ class laudanum_dev_box {
     ubuntu: { 
       exec { "apt_get_update":
         command => "/usr/bin/apt-get update",
+        require => Exec["networking_restart"],
       }
     }
   }
@@ -107,7 +129,7 @@ class laudanum_dev_box {
   }
 
   class {'apache': }
-  class {'apache::php': }
+  class {'apache::mod::php': }
   case $operatingsystem {
     centos: { 
       package { "mod-php": # why doesn't apache::php do this?
@@ -163,20 +185,15 @@ class laudanum_dev_box {
 # or we're going to create one
   file {"/home/vagrant/.ssh/github.rsa":
     ensure => file,
-    source => '/ssh-config/github.rsa',
+    source => '/ssh-config/id_rsa',
   }
   file {"/home/vagrant/.ssh/github.rsa.pub":
     ensure => file,
-    source => '/ssh-config/github.rsa.pub',
+    source => '/ssh-config/id_rsa.pub',
   }
   exec { "github_ssh_keys":
     command => "/usr/bin/ssh-keygen -f /home/vagrant/.ssh/github.rsa",
     creates => "/home/vagrant/.ssh/github.rsa"
-  }
-  file {"/home/vagrant/.ssh/config":
-    ensure => file,
-    source => 'puppet:///modules/laudanum/ssh-config',
-    mode => 600,
   }
 
   # centos policy tools
@@ -263,6 +280,7 @@ class laudanum_drupal7_box {
   pear::package { "PEAR": }
   pear::package { "Console_Table": }
 
+  # $ sudo pear upgrade
   # $ sudo pear channel-discover pear.drush.org
   # $ sudo pear install drush/drush-6.0.0
 
@@ -276,6 +294,9 @@ class laudanum_drupal7_box {
   create_drupal_site { $dev_domains: }
 }
 
+exec { "networking_restart":
+   command => "/etc/init.d/networking restart",
+}
 
 
 include laudanum_dev_box

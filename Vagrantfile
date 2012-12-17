@@ -20,9 +20,13 @@ Vagrant::Config.run do |config|
   # fix hang after `Waiting for VM to boot. This can take a few minutes.`
   # https://github.com/mitchellh/vagrant/issues/455#issuecomment-1740526
   config.ssh.max_tries = 150
+  config.ssh.port = 2222
   config.vm.customize ["modifyvm", :id, "--rtcuseutc", "on"]
-  # config.vm.customize ["modifyvm", :id, "--memory", "1536", "--cpus", "2", "--name", "Laudanum dev box"]
-  config.vm.customize ["modifyvm", :id, "--memory", "1536", "--name", "Laudanum dev box Ubuntu"]
+  # config.vm.customize ["modifyvm", :id, "natdnshostresolver1--memory", "1536", "--cpus", "2", "--name", "Laudanum dev box"]
+  config.vm.customize ["modifyvm", :id, "--memory", "1536"]
+  # config.vm.customize ["modifyvm", :id, "--name", "Laudanum dev box Ubuntu"]
+  config.vm.customize ["modifyvm", :id, "--natdnshostresolver1", "on", "--natdnsproxy1", "on"]
+
   # config.vm.memory_size = 2048
   # config.vm.cpu_count = 2
 
@@ -46,6 +50,9 @@ Vagrant::Config.run do |config|
   # also forward 8080 for drush quickdrupal, solr
   config.vm.forward_port 8080, 7880
   
+  # DNS not resolving.
+  config.vm.provision :shell, :inline => "echo nameserver 10.0.2.2 > /etc/resolv.conf"
+
   # Install Puppet
   # config.vm.provision :shell, :inline => "sudo yum -y install puppet"
 
@@ -59,13 +66,15 @@ Vagrant::Config.run do |config|
 
   config.vm.share_folder "ssh-config", "/ssh-config", "../ssh-config"
   # windows -- use the following line
-  # config.vm.share_folder "sites", "/srv/www", "../sites", :owner => "nobody", :extra => 'dmode=770,fmode=770', :create => true
+  # config.vm.share_folder "sites", "/srv/www", "../sites", :owner => "vagrant", :extra => 'dmode=777,fmode=666', :create => true, :nfs => false 
   
   # linux / mac -- use the following 2 lines (because on these systems vboxsf is sooooo sloooow)
   config.vm.network :hostonly, "192.168.33.10"
   config.nfs.map_uid = 500
   config.nfs.map_gid = 20 
   config.vm.share_folder "sites", "/srv/www", "../sites", :extra => 'dmode=777,fmode=777', :map_uid => 501, :map_gid => 20, :nfs => true, :create => true
+  # config.vm.share_folder "sites", "/srv/www", "../sites", :extra => 'dmode=777,fmode=666', :map_gid => "1003", :map_uid => "1001", :nfs => true, :create => true
+
   # Install Puppet via puppet labs yum repo
 
   # Enable provisioning with Puppet stand alone.  Puppet manifests
