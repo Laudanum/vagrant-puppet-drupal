@@ -26,8 +26,6 @@ $dev_domains = [
 #  zen requires Ruby version >= 1.9.2.
 # still always need to sudo pear uninstall drush/drush on every boot
 
-$dev_domains = [ "supanova.org.au", "d7.supanova.org.au", "spacetimeconcerto.com", "sturtassociates.com.au", "artlib.com.au", "cashmereandkaye.com", "scanlines.net", "ailiesnow.com",  "saccid.com"] 
-
 define create_drupal_site {
 # apache::vhosts provides this
 #  file {"/srv/www/${name}":
