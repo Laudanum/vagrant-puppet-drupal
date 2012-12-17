@@ -116,7 +116,9 @@ class laudanum_dev_box {
   package { "lynx":
     ensure => "present",
   }
-
+  class { solr:
+    cores => [ 'local' ]
+  }
   host { "host-local.${dev_domains[0]}":
     ensure => "present",
     ip     => "127.0.0.1",
