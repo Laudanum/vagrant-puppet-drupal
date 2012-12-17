@@ -1,4 +1,20 @@
-$dev_domains = [ "spacetimeconcerto.com", "sturtassociates.com.au", "artlib.com.au", "scanlines.net", "supanova.org.au", ] 
+# support quickdrupal
+# $ sudo apt-get install php5-cgi
+# $ sudo chown vagrant /usr/share/php/drush/lib
+
+$dev_domains = [ 
+  "spacetimeconcerto.com", 
+  "sturtassociates.com.au", 
+  "artlib.com.au", 
+  "scanlines.net", 
+  "supanova.org.au", 
+  "d7.supanova.org.au", 
+  "matteozingales.com", 
+  "saccid.com", 
+  "subedit.me",
+  "turpincrawford.com",
+  "newsouthbooks.com.au",
+] 
 
 define create_drupal_site {
 # apache::vhosts provides this

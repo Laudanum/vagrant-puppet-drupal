@@ -43,7 +43,9 @@ Vagrant::Config.run do |config|
   # Forward a port from the guest to the host, which allows for outside
   # computers to access the VM, whereas host only networking does not.
   config.vm.forward_port 80, 7841
-
+  # also forward 8080 for drush quickdrupal, solr
+  config.vm.forward_port 8080, 7880
+  
   # Install Puppet
   # config.vm.provision :shell, :inline => "sudo yum -y install puppet"
 
@@ -61,8 +63,9 @@ Vagrant::Config.run do |config|
   
   # linux / mac -- use the following 2 lines (because on these systems vboxsf is sooooo sloooow)
   config.vm.network :hostonly, "192.168.33.10"
-  config.vm.share_folder "sites", "/srv/www", "../sites", :map_gid => "1003", :map_uid => "1001", :extra => 'dmode=770,fmode=770', :nfs => true, :create => true
-
+  config.nfs.map_uid = 500
+  config.nfs.map_gid = 20 
+  config.vm.share_folder "sites", "/srv/www", "../sites", :extra => 'dmode=777,fmode=777', :map_uid => 501, :map_gid => 20, :nfs => true, :create => true
   # Install Puppet via puppet labs yum repo
 
   # Enable provisioning with Puppet stand alone.  Puppet manifests
