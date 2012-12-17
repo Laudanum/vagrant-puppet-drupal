@@ -9,6 +9,7 @@ $dev_domains = [
   "scanlines.net", 
   "supanova.org.au", 
   "d7.supanova.org.au", 
+  "janus.supanova.org.au", 
   "matteozingales.com", 
   "saccid.com", 
   "subedit.me",
