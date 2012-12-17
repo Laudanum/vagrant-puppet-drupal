@@ -23,7 +23,8 @@ Vagrant::Config.run do |config|
   config.ssh.port = 2222
   config.vm.customize ["modifyvm", :id, "--rtcuseutc", "on"]
   # config.vm.customize ["modifyvm", :id, "natdnshostresolver1--memory", "1536", "--cpus", "2", "--name", "Laudanum dev box"]
-  config.vm.customize ["modifyvm", :id, "--memory", "1536", "--name", "Laudanum dev box Ubuntu"]
+  config.vm.customize ["modifyvm", :id, "--memory", "1536"]
+  # config.vm.customize ["modifyvm", :id, "--name", "Laudanum dev box Ubuntu"]
   config.vm.customize ["modifyvm", :id, "--natdnshostresolver1", "on", "--natdnsproxy1", "on"]
 
   # config.vm.memory_size = 2048
@@ -47,7 +48,7 @@ Vagrant::Config.run do |config|
   # computers to access the VM, whereas host only networking does not.
   config.vm.forward_port 80, 7841
   # DNS not resolving.
-  # config.vm.provision :shell, :inline => "echo nameserver 10.0.2.2 > /etc/resolv.conf"
+  config.vm.provision :shell, :inline => "echo nameserver 10.0.2.2 > /etc/resolv.conf"
 
   # Install Puppet
   # config.vm.provision :shell, :inline => "sudo yum -y install puppet"

@@ -1,3 +1,13 @@
+# on bruno:
+# didn't install mysql-client mysql-server php5-mysql php5-gd pear drush
+# need to install ruby, compass and zen
+# sudo apt-get install ruby libxml2-dev libxslt1-dev
+# sudo gem install compass
+# sudo gem install zen
+# ERROR:  Error installing zen:
+#  zen requires Ruby version >= 1.9.2.
+# still always need to sudo pear uninstall drush/drush on every boot
+
 $dev_domains = [ "supanova.org.au", "d7.supanova.org.au", "spacetimeconcerto.com", "sturtassociates.com.au", "artlib.com.au", "cashmereandkaye.com", "scanlines.net", "ailiesnow.com",  "saccid.com"] 
 
 define create_drupal_site {
@@ -258,6 +268,7 @@ class laudanum_drupal7_box {
   pear::package { "PEAR": }
   pear::package { "Console_Table": }
 
+  # $ sudo pear upgrade
   # $ sudo pear channel-discover pear.drush.org
   # $ sudo pear install drush/drush-6.0.0
 
