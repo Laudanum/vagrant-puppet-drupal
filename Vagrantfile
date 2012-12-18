@@ -51,7 +51,7 @@ Vagrant::Config.run do |config|
   config.vm.forward_port 8080, 7880
   
   # DNS not resolving.
-  config.vm.provision :shell, :inline => "echo nameserver 10.0.2.2 > /etc/resolv.conf"
+  # config.vm.provision :shell, :inline => "echo nameserver 10.0.2.2 > /etc/resolv.conf"
 
   # Install Puppet
   # config.vm.provision :shell, :inline => "sudo yum -y install puppet"
