@@ -91,7 +91,7 @@ define create_drupal_site {
 #  }
 
 
-  apache::vhost { "${name}":
+  apache::vhost { "local.${name}":
     docroot       => "/srv/www/${name}/local",
     port          => 80,
 #    serveraliases => $aliases,
@@ -171,6 +171,7 @@ class laudanum_dev_box {
     require => Exec["aptgetupdate"],
   }
   class {'apache::mod::php': }
+  class {'apache::mod::rewrite': }
   case $operatingsystem {
     centos: { 
       package { "mod-php": # why doesn't apache::php do this?
@@ -284,9 +285,9 @@ class laudanum_drupal7_box {
   }
  
 # while developing this takes too long to install 
-#  package { "sendmail":
-#    ensure => "present",
-#  }
+  package { "sendmail":
+    ensure => "present",
+  }
 
   case $operatingsystem {
       centos: { $php_pdo = "php-pdo" }
