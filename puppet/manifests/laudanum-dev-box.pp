@@ -6,6 +6,7 @@
 $dev_domains = [ 
   "ailiesnow.com", 
   "artlib.com.au", 
+  "example.com",
   "hol.ly",
   "notionproject.com", 
   "spacetimeconcerto.com", 
@@ -171,7 +172,7 @@ class laudanum_dev_box {
     require => Exec["aptgetupdate"],
   }
   class {'apache::mod::php': }
-  class {'apache::mod::rewrite': }
+  class {'apache::mod::default': }
   case $operatingsystem {
     centos: { 
       package { "mod-php": # why doesn't apache::php do this?
