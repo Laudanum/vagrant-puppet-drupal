@@ -11,7 +11,6 @@ $dev_domains = [
   "notionproject.com", 
   "spacetimeconcerto.com", 
   "scanlines.net", 
-  "janus.supanova.org.au",
   "supanova.org.au", 
   "d7.supanova.org.au", 
   "janus.supanova.org.au", 
@@ -149,7 +148,8 @@ class laudanum_dev_box {
     require => Exec["aptgetupdate"],
   }
   # https://github.com/example42/puppet-solr
-  class { solr:  }
+  # depends on puppi? http://www.example42.com/?q=Puppi_A_Puppet_module_for_Deployment_Automation
+  # class { solr:  }
   # get the right config files
   # http://drupalcode.org/project/search_api_solr.git/blob/HEAD:/solr-conf/3.x/solrconfig.xml
 
