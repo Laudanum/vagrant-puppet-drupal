@@ -51,8 +51,9 @@ Vagrant::Config.run do |config|
   config.vm.forward_port 8080, 8083
   config.vm.forward_port 8983, 8983
  
+  
   # DNS not resolving.
-  config.vm.provision :shell, :inline => "echo nameserver 10.0.2.2 > /etc/resolv.conf"
+  # config.vm.provision :shell, :inline => "echo nameserver 10.0.2.2 > /etc/resolv.conf"
 
   # Install Puppet
   # config.vm.provision :shell, :inline => "sudo yum -y install puppet"
@@ -71,7 +72,10 @@ Vagrant::Config.run do |config|
   
   # linux / mac -- use the following 2 lines (because on these systems vboxsf is sooooo sloooow)
   config.vm.network :hostonly, "192.168.33.10"
-  config.vm.share_folder "sites", "/srv/www", "../sites", :map_gid => "1003", :map_uid => "1001", :extra => 'dmode=777,fmode=666', :nfs => true, :create => true
+  config.nfs.map_uid = 500
+  config.nfs.map_gid = 20 
+  config.vm.share_folder "sites", "/srv/www", "../sites", :extra => 'dmode=777,fmode=777', :map_uid => 501, :map_gid => 20, :nfs => true, :create => true
+  # config.vm.share_folder "sites", "/srv/www", "../sites", :extra => 'dmode=777,fmode=666', :map_gid => "1003", :map_uid => "1001", :nfs => true, :create => true
 
   # Install Puppet via puppet labs yum repo
 

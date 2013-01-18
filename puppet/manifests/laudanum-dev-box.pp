@@ -1,5 +1,27 @@
+# support quickdrupal
+# $ sudo apt-get install php5-cgi
+# $ sudo chown vagrant /usr/share/php/drush/lib
+
+
+$dev_domains = [ 
+  "ailiesnow.com", 
+  "artlib.com.au", 
+  "example.com",
+  "hol.ly",
+  "notionproject.com", 
+  "spacetimeconcerto.com", 
+  "scanlines.net", 
+  "janus.supanova.org.au",
+  "supanova.org.au", 
+  "d7.supanova.org.au", 
+  "janus.supanova.org.au", 
+  "matteozingales.com", 
+  "saccid.com", 
+  "subedit.me",
+  "turpincrawford.com",
+  "newsouthbooks.com.au",
+] 
 # on bruno:
-# didn't install mysql-client mysql-server php5-mysql php5-gd pear drush
 # need to install ruby, compass and zen
 # sudo apt-get install ruby libxml2-dev libxslt1-dev
 # sudo gem install compass
@@ -8,14 +30,22 @@
 #  zen requires Ruby version >= 1.9.2.
 # still always need to sudo pear uninstall drush/drush on every boot
 
-$dev_domains = [ "supanova.org.au", "d7.supanova.org.au", "spacetimeconcerto.com", "sturtassociates.com.au", "artlib.com.au", "cashmereandkaye.com", "scanlines.net", "ailiesnow.com",  "saccid.com"] 
-
 define create_drupal_site {
 # apache::vhosts provides this
 #  file {"/srv/www/${name}":
 #      ensure => directory,
 #      mode   => 644,
 #  }
+
+  file {"/srv/www/${name}":
+    ensure => directory,
+    mode   => 777,
+  }
+
+  file {"/srv/www/${name}/local":
+    ensure => directory,
+    mode   => 777,
+  }
 
   file {"/srv/www/${name}/backup":
     ensure => directory,
@@ -27,6 +57,8 @@ define create_drupal_site {
     mode   => 777,
   }
 
+  $dbname = regsubst($name, '\.', '_', 'G')
+
 # cant' use vagrant (as mysql complains about duplicate users)
 #  mysql::db { "${name}_local":
 #    user     => "${name}",
@@ -34,46 +66,48 @@ define create_drupal_site {
 #    host     => 'localhost',
 #    grant    => ['all'],
 #  }
-  database { "${name}_local":
-      ensure  => 'present',
-      charset => 'utf8',
+  database { "${dbname}_local":
+    ensure  => 'present',
+    charset => 'utf8',
+    require => [ Exec["aptgetupdate"], Package["mysql_client"], ],
   }
-  database_grant { "vagrant@localhost/${name}_local":
+  database_grant { "vagrant@localhost/${dbname}_local":
     privileges => ['all'] ,
   }
   
 # @TODO currently drupal::site overwrites settings. thats bad
-  drupal::site { "${name}":
-    databases => { 
-      "default" => { 
-        "default" => { 
-          database  => "${name}_local", 
-          username  => 'vagrant', 
-          password => 'vagrant', 
-          host => 'localhost', 
-          port => '', 
-          driver => 'mysql', 
-          prefix => ''
-        }
-      }
-    },
-    drupal_root => "/srv/www/${name}/local",
-    conf        => {},
-    url         => "local.${name}",
-    aliases     => [],
+#  drupal::site { "${name}":
+#    databases => { 
+#      "default" => { 
+#        "default" => { 
+#          database  => "${dbname}_local", 
+#          username  => 'vagrant', 
+#          password => 'vagrant', 
+#          host => 'localhost', 
+#          port => '', 
+#          driver => 'mysql', 
+#          prefix => ''
+#        }
+#      }
+#    },
+#    drupal_root => "/srv/www/${name}/local",
+#    conf        => {},
+#    url         => "local.${name}",
+#    aliases     => [],
+#  }
+
+
+  apache::vhost { "local.${name}":
+    docroot       => "/srv/www/${name}/local",
+    port          => 80,
+#    serveraliases => $aliases,
+    serveradmin   =>  'admin@example.com',
+    logroot       => "/var/log/$apache::params::apache_name/${name}",
+    override      => "All",
   }
 }
 
 class laudanum_dev_box {
-
-  case $operatingsystem {
-    ubuntu: { 
-      exec { "apt_get_update":
-        command => "/usr/bin/apt-get update",
-        require => Exec["networking_restart"],
-      }
-    }
-  }
 
   user { "apache": 
     ensure => "present", 
@@ -91,13 +125,43 @@ class laudanum_dev_box {
   }
   package { $git:
     ensure => "present",
+    require => Exec["aptgetupdate"],
   }
   package { "wget":
     ensure => "present",
+    require => Exec["aptgetupdate"],
   }
   package { "lynx":
     ensure => "present",
+    require => Exec["aptgetupdate"],
   }
+# compass etc.
+  package { "ruby":
+    ensure => "present",
+    require => Exec["aptgetupdate"],
+  }
+   package { "libxml2-dev":
+    ensure => "present",
+    require => Exec["aptgetupdate"],
+  }
+  package { "libxslt1-dev":
+    ensure => "present",
+    require => Exec["aptgetupdate"],
+  }
+  # https://github.com/example42/puppet-solr
+  class { solr:  }
+  # get the right config files
+  # http://drupalcode.org/project/search_api_solr.git/blob/HEAD:/solr-conf/3.x/solrconfig.xml
+
+  package { 'compass':
+    ensure   => 'installed',
+    provider => 'gem',
+    require => [ Package["libxml2-dev"], Package["libxml2-dev"], ],
+  }
+#  package { 'zen':
+#   ensure   => 'installed',
+#   provider => 'gem',
+#  }
 
   host { "host-local.${dev_domains[0]}":
     ensure => "present",
@@ -111,8 +175,11 @@ class laudanum_dev_box {
 #      mode => 644,
   }
 
-  class {'apache': }
+  class {'apache': 
+    require => Exec["aptgetupdate"],
+  }
   class {'apache::mod::php': }
+  class {'apache::mod::default': }
   case $operatingsystem {
     centos: { 
       package { "mod-php": # why doesn't apache::php do this?
@@ -137,12 +204,17 @@ class laudanum_dev_box {
 #    require	=> File["/srv/www/${dev_domains[0]}"],
 #  }
 
-  class { 'mysql': }
-  class { 'mysql::server':
-    config_hash => { 'root_password' => 'foo' }
+  class { 'mysql':
+    require => Exec["aptgetupdate"],
   }
+
+  class { 'mysql::server':
+    config_hash => { 'root_password' => 'foo' },
+  }
+
   database_user { 'vagrant@localhost':
-    password_hash => mysql_password('vagrant')
+    password_hash => mysql_password('vagrant'),
+    require => [ Exec["aptgetupdate"], Package["mysql_client"], ],
   }
   
   case $operatingsystem {
@@ -155,6 +227,7 @@ class laudanum_dev_box {
   }
   package { $php_mysql:
     ensure => "present",
+    require => [ Exec["aptgetupdate"], Package["mysql_client"], ],
   }
 
 # add githubs host key so we don't get warnings
@@ -216,7 +289,10 @@ class laudanum_drupal7_box {
   }
   package { "subversion":
     ensure => "present",
+    require => Exec["aptgetupdate"],
   }
+ 
+# while developing this takes too long to install 
   package { "sendmail":
     ensure => "present",
   }
@@ -231,6 +307,7 @@ class laudanum_drupal7_box {
   }
   package { $php_pdo:  # enables Sqlite (Quick Drupal requirement)
     ensure => "present",
+    require => Exec["aptgetupdate"],      
   }
 
   case $operatingsystem {
@@ -243,6 +320,7 @@ class laudanum_drupal7_box {
   }
   package { $php_gd:
     ensure => "present",
+    require => Exec["aptgetupdate"],
   }
 
   case $operatingsystem {
@@ -255,6 +333,7 @@ class laudanum_drupal7_box {
 
   class { "pear":
     package => "php-pear", # this installs php53 and php53-cli
+    require => Exec["aptgetupdate"],
   }
 
   # If no version number is supplied, the latest stable release will be
@@ -269,8 +348,9 @@ class laudanum_drupal7_box {
 
   # Version numbers are supported.
   pear::package { "drush":
-    version => "6.0.0",
+#    version => "6.0.0",
     repository => "pear.drush.org",
+    require => Pear::Package["PEAR"],
   }
 
   # loop over domains creating drupal sites
@@ -281,6 +361,15 @@ exec { "networking_restart":
    command => "/etc/init.d/networking restart",
 }
 
+exec { "dpkg_reconfigure": 
+  command => "/usr/bin/dpkg --configure -a",
+  require => Exec["networking_restart"],
+}
+
+exec { "aptgetupdate":
+  command => "/usr/bin/apt-get update",
+  require => Exec["dpkg_reconfigure"],
+}
 
 include laudanum_dev_box
 include laudanum_drupal7_box
