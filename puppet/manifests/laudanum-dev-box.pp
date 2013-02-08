@@ -6,6 +6,7 @@
 $dev_domains = [ 
   "ailiesnow.com", 
   "artlib.com.au", 
+  "example.com",
   "hol.ly",
   "notionproject.com", 
   "spacetimeconcerto.com", 
@@ -13,6 +14,12 @@ $dev_domains = [
   "janus.supanova.org.au",
   "supanova.org.au", 
   "d7.supanova.org.au", 
+  "janus.supanova.org.au", 
+  "matteozingales.com", 
+  "saccid.com", 
+  "subedit.me",
+  "turpincrawford.com",
+  "newsouthbooks.com.au",
 ] 
 # on bruno:
 # need to install ruby, compass and zen
@@ -22,7 +29,6 @@ $dev_domains = [
 # ERROR:  Error installing zen:
 #  zen requires Ruby version >= 1.9.2.
 # still always need to sudo pear uninstall drush/drush on every boot
-
 
 define create_drupal_site {
 # apache::vhosts provides this
@@ -142,6 +148,11 @@ class laudanum_dev_box {
     ensure => "present",
     require => Exec["aptgetupdate"],
   }
+  # https://github.com/example42/puppet-solr
+  class { solr:  }
+  # get the right config files
+  # http://drupalcode.org/project/search_api_solr.git/blob/HEAD:/solr-conf/3.x/solrconfig.xml
+
   package { 'compass':
     ensure   => 'installed',
     provider => 'gem',
@@ -151,9 +162,6 @@ class laudanum_dev_box {
 #   ensure   => 'installed',
 #   provider => 'gem',
 #  }
-
- 
-
 
   host { "host-local.${dev_domains[0]}":
     ensure => "present",

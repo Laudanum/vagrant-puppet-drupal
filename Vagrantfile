@@ -47,8 +47,10 @@ Vagrant::Config.run do |config|
   # Forward a port from the guest to the host, which allows for outside
   # computers to access the VM, whereas host only networking does not.
   config.vm.forward_port 80, 7841
-  # also forward 8080 for drush quickdrupal, solr
-  config.vm.forward_port 8080, 7880
+  # solr
+  config.vm.forward_port 8080, 8083
+  config.vm.forward_port 8983, 8983
+ 
   
   # DNS not resolving.
   # config.vm.provision :shell, :inline => "echo nameserver 10.0.2.2 > /etc/resolv.conf"
