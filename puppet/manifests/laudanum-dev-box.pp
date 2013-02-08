@@ -57,6 +57,11 @@ define create_drupal_site {
     mode   => 777,
   }
 
+  file {"/srv/www/${name}/logs":
+    ensure => directory,
+    mode   => 777,
+  }
+
   $dbname = regsubst($name, '\.', '_', 'G')
 
 # cant' use vagrant (as mysql complains about duplicate users)
@@ -102,7 +107,7 @@ define create_drupal_site {
     port          => 80,
 #    serveraliases => $aliases,
     serveradmin   =>  'admin@example.com',
-    logroot       => "/var/log/$apache::params::apache_name/${name}",
+    logroot       => "/srv/www/${name}/logs",
     override      => "All",
   }
 }

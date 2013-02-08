@@ -13,3 +13,6 @@
 [submodule "puppet/modules/solr"]
 	path = puppet/modules/solr
 	url = git://github.com/example42/puppet-solr.git
+[submodule "puppet/modules/stdlib"]
+	path = puppet/modules/stdlib
+	url = https://github.com/puppetlabs/puppetlabs-stdlib

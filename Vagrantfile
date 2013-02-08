@@ -7,12 +7,12 @@ Vagrant::Config.run do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "lucid32"
+  config.vm.box = "precise32"
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
   # config.vm.box_url = "https://vagrant-centos-6.s3.amazonaws.com/centos-6.box"
-  config.vm.box_url ="http://files.vagrantup.com/lucid32.box"
+  config.vm.box_url ="http://files.vagrantup.com/precise32.box"
 
   # Fix the os type so that it doesn't complain about the kernel.
   # config.vm.customize ["modifyvm", :id, "--ostype", "RedHat_64"]
@@ -46,10 +46,11 @@ Vagrant::Config.run do |config|
 
   # Forward a port from the guest to the host, which allows for outside
   # computers to access the VM, whereas host only networking does not.
-  config.vm.forward_port 80, 7841
+  config.vm.forward_port 80, 8841
+  config.vm.forward_port 3306, 8306
   # solr
-  config.vm.forward_port 8080, 8083
-  config.vm.forward_port 8983, 8983
+  config.vm.forward_port 8080, 8084
+  config.vm.forward_port 8983, 8984
  
   
   # DNS not resolving.
@@ -60,6 +61,10 @@ Vagrant::Config.run do |config|
 
   # Install Puppet via puppet labs yum repo
   # config.vm.provision :shell, :path => "install-puppet.sh"
+
+  # Install nfs server
+  config.vm.provision :shell, :inline => "sudo apt-get install -y nfs-kernel-server"
+
 
   # Share an additional folder to the guest VM. The first argument is
   # an identifier, the second is the path on the guest to mount the
