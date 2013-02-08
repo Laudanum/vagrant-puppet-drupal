@@ -171,7 +171,8 @@ class laudanum_dev_box {
     require => Exec["aptgetupdate"],
   }
   class {'apache::mod::php': }
-  class {'apache::mod::rewrite': }
+  # enables rewrite
+  class {'apache::mod::default': }
   case $operatingsystem {
     centos: { 
       package { "mod-php": # why doesn't apache::php do this?
