@@ -184,6 +184,8 @@ class laudanum_dev_box {
     require => Exec["aptgetupdate"],
   }
   class {'apache::mod::php': }
+  # for Testing module
+  class {'apache::mod::curl': }
   # enables rewrite
   class {'apache::mod::default': }
   case $operatingsystem {
