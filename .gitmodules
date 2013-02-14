@@ -12,4 +12,4 @@
 	url = git@github.com:rafaelfelix/puppet-pear
 [submodule "puppet/modules/solr"]
 	path = puppet/modules/solr
-	url = https://github.com/vamsee/puppet-solr.git
+	url = git@github.com:queenvictoria/puppet-solr.git
