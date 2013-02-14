@@ -6,6 +6,7 @@
 $dev_domains = [ 
   "ailiesnow.com", 
   "artlib.com.au", 
+  "d8.example.com",
   "example.com",
   "hol.ly",
   "notionproject.com", 
@@ -178,6 +179,7 @@ class laudanum_dev_box {
     require => Exec["aptgetupdate"],
   }
   class {'apache::mod::php': }
+  # enables rewrite
   class {'apache::mod::default': }
   case $operatingsystem {
     centos: { 
