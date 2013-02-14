@@ -11,7 +11,6 @@ $dev_domains = [
   "notionproject.com", 
   "spacetimeconcerto.com", 
   "scanlines.net", 
-  "janus.supanova.org.au",
   "supanova.org.au", 
   "d7.supanova.org.au", 
   "janus.supanova.org.au", 
@@ -149,7 +148,7 @@ class laudanum_dev_box {
     require => Exec["aptgetupdate"],
   }
   # https://github.com/example42/puppet-solr
-  class { solr:  }
+  # class { solr:  }
   # get the right config files
   # http://drupalcode.org/project/search_api_solr.git/blob/HEAD:/solr-conf/3.x/solrconfig.xml
 
@@ -163,11 +162,11 @@ class laudanum_dev_box {
 #   provider => 'gem',
 #  }
 
-  host { "host-local.${dev_domains[0]}":
-    ensure => "present",
-    ip     => "127.0.0.1",
-    host_aliases => [ "local.${dev_domains[0]}", "localhost", "vagrant-centos-6.localdomain"],
-  }
+#  host { "host-local.${dev_domains[0]}":
+#    ensure => "present",
+#    ip     => "127.0.0.1",
+#    host_aliases => [ "local.${dev_domains[0]}", "localhost", "vagrant-centos-6.localdomain"],
+#  }
 
 # Create necessary parent directories.
   file {["/srv", "/srv/www"]:
@@ -355,6 +354,28 @@ class laudanum_drupal7_box {
 
   # loop over domains creating drupal sites
   create_drupal_site { $dev_domains: }
+
+#  drupal::site { $dev_domains:
+ #   databases => { 
+  #    "default" => { 
+   #     "default" => { 
+    #      database  => "${dbname}_local", 
+     #     username  => 'vagrant', 
+      #    password => 'vagrant', 
+       #   host => 'localhost', 
+        #  port => '', 
+         # driver => 'mysql', 
+          #prefix => ''
+#        }
+ #     }
+  #  },
+   # drupal_root => "/srv/www/${name}/local",
+    #conf        => {},
+#    url         => "local.${name}",
+ #   aliases     => [],
+  #}
+
+ 
 }
 
 exec { "networking_restart":
