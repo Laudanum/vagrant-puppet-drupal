@@ -13,10 +13,11 @@ $dev_domains = [
   "spacetimeconcerto.com", 
   "scanlines.net", 
   "supanova.org.au", 
-  "d7.supanova.org.au", 
+  "d7.supanova.org.au",
   "janus.supanova.org.au", 
-  "matteozingales.com", 
-  "saccid.com", 
+  "matteozingales.com",
+  "redshiftaa.com.au",
+  "saccid.com",
   "subedit.me",
   "turpincrawford.com",
   "newsouthbooks.com.au",
@@ -39,24 +40,24 @@ define create_drupal_site {
 
   file {"/srv/www/${name}":
     ensure => directory,
-    mode   => 777,
+    mode   => 755,
   }
 
 # apache is defining this already--but permissions are wrong?
 #  file {"${name}_drupal_root":
 #    name => "/srv/www/${name}/local",
 #    ensure => directory,
-#    mode   => 777,
+#    mode   => 755,
 #  }
 
   file {"/srv/www/${name}/backup":
     ensure => directory,
-    mode   => 777,
+    mode   => 755,
   }
 
   file {"/srv/www/${name}/content":
     ensure => directory,
-    mode   => 777,
+    mode   => 755,
   }
 
   $dbname = regsubst($name, '\.', '_', 'G')
@@ -183,7 +184,7 @@ class laudanum_dev_box {
   }
   class {'apache::mod::php': }
   # enables rewrite
-  class {'apache::mod::default': }
+  # class {'apache::mod::default': }
   case $operatingsystem {
     centos: { 
       package { "mod-php": # why doesn't apache::php do this?
