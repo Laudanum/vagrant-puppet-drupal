@@ -6,6 +6,7 @@
 $dev_domains = [ 
   "ailiesnow.com", 
   "artlib.com.au", 
+  "d8.example.com",
   "example.com",
   "hol.ly",
   "notionproject.com", 
@@ -165,11 +166,11 @@ class laudanum_dev_box {
 #   provider => 'gem',
 #  }
 
-  host { "host-local.${dev_domains[0]}":
-    ensure => "present",
-    ip     => "127.0.0.1",
-    host_aliases => [ "local.${dev_domains[0]}", "localhost", "vagrant-centos-6.localdomain"],
-  }
+#  host { "host-local.${dev_domains[0]}":
+#    ensure => "present",
+#    ip     => "127.0.0.1",
+#    host_aliases => [ "local.${dev_domains[0]}", "localhost", "vagrant-centos-6.localdomain"],
+#  }
 
 # Create necessary parent directories.
   file {["/srv", "/srv/www"]:
@@ -181,6 +182,7 @@ class laudanum_dev_box {
     require => Exec["aptgetupdate"],
   }
   class {'apache::mod::php': }
+  # enables rewrite
   class {'apache::mod::default': }
   case $operatingsystem {
     centos: { 
@@ -357,6 +359,28 @@ class laudanum_drupal7_box {
 
   # loop over domains creating drupal sites
   create_drupal_site { $dev_domains: }
+
+#  drupal::site { $dev_domains:
+ #   databases => { 
+  #    "default" => { 
+   #     "default" => { 
+    #      database  => "${dbname}_local", 
+     #     username  => 'vagrant', 
+      #    password => 'vagrant', 
+       #   host => 'localhost', 
+        #  port => '', 
+         # driver => 'mysql', 
+          #prefix => ''
+#        }
+ #     }
+  #  },
+   # drupal_root => "/srv/www/${name}/local",
+    #conf        => {},
+#    url         => "local.${name}",
+ #   aliases     => [],
+  #}
+
+ 
 }
 
 exec { "networking_restart":

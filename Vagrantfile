@@ -48,7 +48,8 @@ Vagrant::Config.run do |config|
   # computers to access the VM, whereas host only networking does not.
   config.vm.forward_port 80, 7841
   # also forward 8080 for drush quickdrupal, solr
-  config.vm.forward_port 8080, 7880
+  config.vm.forward_port 8080, 7080
+  config.vm.forward_port 8983, 7983
   # also forward mysql
   config.vm.forward_port 3306, 7306
   
