@@ -41,10 +41,12 @@ define create_drupal_site {
     mode   => 777,
   }
 
-  file {"/srv/www/${name}/local":
-    ensure => directory,
-    mode   => 777,
-  }
+# apache is defining this already--but permissions are wrong?
+#  file {"${name}_drupal_root":
+#    name => "/srv/www/${name}/local",
+#    ensure => directory,
+#    mode   => 777,
+#  }
 
   file {"/srv/www/${name}/backup":
     ensure => directory,

@@ -49,6 +49,8 @@ Vagrant::Config.run do |config|
   config.vm.forward_port 80, 7841
   # also forward 8080 for drush quickdrupal, solr
   config.vm.forward_port 8080, 7880
+  # also forward mysql
+  config.vm.forward_port 3306, 7306
   
   # DNS not resolving.
   # config.vm.provision :shell, :inline => "echo nameserver 10.0.2.2 > /etc/resolv.conf"
