@@ -359,7 +359,8 @@ class laudanum_drupal7_box {
   }
 
   # loop over domains creating drupal sites
-  create_drupal_site { $dev_domains: }
+  # create_drupal_site { $dev_domains: }
+  holly_drupal::site { $dev_domains: }
 
 #  drupal::site { $dev_domains:
  #   databases => { 
@@ -385,7 +386,7 @@ class laudanum_drupal7_box {
 }
 
 exec { "networking_restart":
-   command => "/etc/init.d/networking restart",
+   command => '/bin/echo hi',
 }
 
 exec { "dpkg_reconfigure": 
