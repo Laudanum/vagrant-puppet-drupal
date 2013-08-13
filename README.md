@@ -75,7 +75,10 @@ https://github.com/drupalboxes/drupal-puppet/tree/master/drupal
 *   Look at Vagrant hosts plugin (for host?)
 *   ~~Enable mod_php~~ added package (unnecessary?) and php.conf
 *   ~~Install lynx~~
-*   Write Vagrant plugin for git / drush.
+*   Write Vagrant plugin for git / drush. `vagrant drush @dev.local dl views-7.x-3.x-dev`
+*   Local Solr
+*   Local Jenkins/Hudson
+*   Install new site `vagrant provision [puppet-script] [example.com]`
 *   settings.php for Drupal isn't working
 `$databases = array (
   'default' =>
