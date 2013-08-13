@@ -17,6 +17,7 @@
 1.  Provision another domain (without sudo -i this won't work as mysql root pwd is stored in /root/.my.cnf)
     `vagrant@precise32:~$ sudo -i puppet apply --modulepath=/vagrant/puppet/modules/ -e 'holly_drupal::site{"example11.com": }'`
     or `vagrant@precise32:~$ sudo -i puppet apply --modulepath=/vagrant/puppet/modules/ -e 'holly_drupal::site{"example15.com": shortname => "fr", profile => "fred" }'`
+    or `$ vagrant ssh -c "sudo -i puppet apply --modulepath=/vagrant/puppet/modules/ -e 'holly_drupal::site{\"freddy.com\": shortname => \"fr\", profile => \"fred\" }'"`
 
 ##Troubleshooting##
 1.  Missing ruby libs (stdlib)
@@ -83,8 +84,11 @@ A wrapper around
 `$ vagrant ssh -c "cd /srv/www/example.com/local && drush @self status"`
 *   Local Solr
 *   Local Jenkins/Hudson
-*   Install new site `vagrant provision [puppet-script] [example.com]`
-*   MySQL is forwarded but my.cnf is restricting to localhost.
+*   Install new site `vagrant drush provision  [example.com]`
+*   ~~MySQL is forwarded but my.cnf is restricting to localhost.~~
+*   Add makefile and other variables to aliases *.erb.
+*   Wrap (or use provision) our build, rebuild, site-install and import scripts.
+*   Install Drush modules for feeds, provision and permissions.
 *   settings.php for Drupal isn't working
 `$databases = array (
   'default' =>
@@ -102,15 +106,15 @@ A wrapper around
   ),
 );
 `
-*   Create vagrant user in MySql
+*   ~~Create vagrant user in MySql
     CREATE USER 'vagrant'@'localhost' IDENTIFIED BY 'vagrant';
-    GRANT ALL ON *.* TO 'vagrant'@'localhost'; FLUSH PRIVILEGES;
+    GRANT ALL ON *.* TO 'vagrant'@'localhost'; FLUSH PRIVILEGES;~~
 *   ~~Install php-mysql~~
 *   AllowOverride all for our vhosts (where is this coming from? apache via drupal?)
-*   ~~Permissions on `files` are bad~~ changed owner to apache in vagrant file
+*   ~~Permissions on `files` are bad~~ ~~changed owner to apache in vagrant file~~ undid apache as on ubuntu/debian the www-data is the Apache user
 *   Drush aliases (for sync from staging or production and sanitise)
 *   ~~.ssh/config is missing~~
-*   install unzip (for drush)
+*   ~~install unzip (for drush)~~
 
 ##Installing Drush##
 
