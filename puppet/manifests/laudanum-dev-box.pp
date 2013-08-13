@@ -111,7 +111,7 @@ class laudanum_dev_box {
 # add php.conf to apache so that php is handled properly
       file {"/etc/httpd/conf.d/php.conf":
         ensure => file,
-        source => "puppet:///modules/laudanum/php.conf",
+        source => "puppet:///modules/holly_drupal/php.conf",
       }
     }
   }
@@ -156,7 +156,7 @@ class laudanum_dev_box {
 # add githubs host key so we don't get warnings
   file {"/home/vagrant/.ssh/known_hosts":
     ensure => file,
-    source => 'puppet:///modules/laudanum/known_hosts',
+    source => 'puppet:///modules/holly_drupal/known_hosts',
   }
 
 # generate a host key for us to use at github
@@ -194,7 +194,7 @@ class laudanum_dev_box {
       # and disable it permanently
       file { "/etc/selinux/config":
         ensure => "file",
-        source => "puppet:///modules/laudanum/selinux_config",
+        source => "puppet:///modules/holly_drupal/selinux_config",
         owner => "root",
         group => "root",
       }
