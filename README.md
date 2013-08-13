@@ -76,9 +76,12 @@ https://github.com/drupalboxes/drupal-puppet/tree/master/drupal
 *   ~~Enable mod_php~~ added package (unnecessary?) and php.conf
 *   ~~Install lynx~~
 *   Write Vagrant plugin for git / drush. `vagrant drush @dev.local dl views-7.x-3.x-dev`
+A wrapper around
+`$ vagrant ssh -c "cd /srv/www/example.com/local && drush @self status"`
 *   Local Solr
 *   Local Jenkins/Hudson
 *   Install new site `vagrant provision [puppet-script] [example.com]`
+*   MySQL is forwarded but my.cnf is restricting to localhost.
 *   settings.php for Drupal isn't working
 `$databases = array (
   'default' =>
