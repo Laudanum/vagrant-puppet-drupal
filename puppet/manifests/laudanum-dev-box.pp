@@ -3,25 +3,25 @@
 # $ sudo chown vagrant /usr/share/php/drush/lib
 
 
-$dev_domains = [ 
-  "ailiesnow.com", 
-  "artlib.com.au", 
+$dev_domains = [
+  "ailiesnow.com",
+  "artlib.com.au",
   "d8.example.com",
   "example.com",
   "hol.ly",
-  "notionproject.com", 
-  "spacetimeconcerto.com", 
-  "scanlines.net", 
-  "supanova.org.au", 
+  "notionproject.com",
+  "spacetimeconcerto.com",
+  "scanlines.net",
+  "supanova.org.au",
   "d7.supanova.org.au",
-  "janus.supanova.org.au", 
+  "janus.supanova.org.au",
   "matteozingales.com",
   "redshiftaa.com.au",
   "saccid.com",
   "subedit.me",
   "turpincrawford.com",
   "newsouthbooks.com.au",
-] 
+]
 # on bruno:
 # need to install ruby, compass and zen
 # sudo apt-get install ruby libxml2-dev libxslt1-dev
@@ -33,8 +33,8 @@ $dev_domains = [
 
 class laudanum_dev_box {
 
-  user { "puppet": 
-    ensure => "present", 
+  user { "puppet":
+    ensure => "present",
   }
   case $operatingsystem {
       centos: { $git = "git" }
@@ -97,14 +97,14 @@ class laudanum_dev_box {
 #      mode => 644,
   }
 
-  class {'apache': 
+  class {'apache':
     require => Exec["aptgetupdate"],
   }
   class {'apache::mod::php': }
   # enables rewrite
   # class {'apache::mod::default': }
   case $operatingsystem {
-    centos: { 
+    centos: {
       package { "mod-php": # why doesn't apache::php do this?
         ensure => "present",
       }
@@ -117,7 +117,7 @@ class laudanum_dev_box {
   }
 
 
-#  apache::vhost { "local.${dev_domains[0]}": 
+#  apache::vhost { "local.${dev_domains[0]}":
 #    vhost_name	=> "local.${dev_domains[0]}",
 #    docroot	=> "/srv/www/${dev_domains[0]}/public/",
 #    serveradmin => "mr.snow@houseoflaudanum.com",
@@ -132,14 +132,14 @@ class laudanum_dev_box {
   }
 
   class { 'mysql::server':
-    config_hash => { 'root_password' => 'foo' },
+    config_hash => { 'root_password' => 'foo', 'bind_address' => '0.0.0.0' },
   }
 
   database_user { 'vagrant@localhost':
     password_hash => mysql_password('vagrant'),
     require => [ Exec["aptgetupdate"], Package["mysql_client"], ],
   }
-  
+
   case $operatingsystem {
       centos: { $php_mysql = "php-mysql" }
       redhat: { $php_mysql = "php-mysql" }
@@ -185,7 +185,7 @@ class laudanum_dev_box {
   # }
 
   case $operatingsystem {
-    centos: { 
+    centos: {
 # http://www.cyberciti.biz/faq/howto-disable-httpd-selinux-security-protection/#comments
 # disable selinux for this boot
       exec { "selinux_off":
@@ -214,8 +214,8 @@ class laudanum_drupal7_box {
     ensure => "present",
     require => Exec["aptgetupdate"],
   }
- 
-# while developing this takes too long to install 
+
+# while developing this takes too long to install
   package { "sendmail":
     ensure => "present",
   }
@@ -230,7 +230,7 @@ class laudanum_drupal7_box {
   }
   package { $php_pdo:  # enables Sqlite (Quick Drupal requirement)
     ensure => "present",
-    require => Exec["aptgetupdate"],      
+    require => Exec["aptgetupdate"],
   }
 
   case $operatingsystem {
@@ -247,7 +247,7 @@ class laudanum_drupal7_box {
   }
 
   case $operatingsystem {
-    centos: { 
+    centos: {
       package { "php-xml":  # enables DOM (Drupal Core requirement)
         ensure => "present",
       }
@@ -281,15 +281,15 @@ class laudanum_drupal7_box {
   holly_drupal::site { $dev_domains: }
 
 #  drupal::site { $dev_domains:
- #   databases => { 
-  #    "default" => { 
-   #     "default" => { 
-    #      database  => "${dbname}_local", 
-     #     username  => 'vagrant', 
-      #    password => 'vagrant', 
-       #   host => 'localhost', 
-        #  port => '', 
-         # driver => 'mysql', 
+ #   databases => {
+  #    "default" => {
+   #     "default" => {
+    #      database  => "${dbname}_local",
+     #     username  => 'vagrant',
+      #    password => 'vagrant',
+       #   host => 'localhost',
+        #  port => '',
+         # driver => 'mysql',
           #prefix => ''
 #        }
  #     }
@@ -300,14 +300,14 @@ class laudanum_drupal7_box {
  #   aliases     => [],
   #}
 
- 
+
 }
 
 exec { "networking_restart":
    command => '/bin/echo hi',
 }
 
-exec { "dpkg_reconfigure": 
+exec { "dpkg_reconfigure":
   command => "/usr/bin/dpkg --configure -a",
   require => Exec["networking_restart"],
 }
