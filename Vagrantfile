@@ -7,12 +7,12 @@ Vagrant::Config.run do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "lucid32"
+  config.vm.box = "precise32"
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
   # config.vm.box_url = "https://vagrant-centos-6.s3.amazonaws.com/centos-6.box"
-  config.vm.box_url ="http://files.vagrantup.com/lucid32.box"
+  config.vm.box_url ="http://files.vagrantup.com/precise32.box"
 
   # Fix the os type so that it doesn't complain about the kernel.
   # config.vm.customize ["modifyvm", :id, "--ostype", "RedHat_64"]
@@ -52,7 +52,7 @@ Vagrant::Config.run do |config|
   config.vm.forward_port 8983, 7983
   # also forward mysql
   config.vm.forward_port 3306, 7306
-  
+
   # DNS not resolving.
   # config.vm.provision :shell, :inline => "echo nameserver 10.0.2.2 > /etc/resolv.conf"
 
@@ -69,13 +69,13 @@ Vagrant::Config.run do |config|
 
   config.vm.share_folder "ssh-config", "/ssh-config", "../ssh-config"
   # windows -- use the following line
-  # config.vm.share_folder "sites", "/srv/www", "../sites", :owner => "vagrant", :extra => 'dmode=777,fmode=666', :create => true, :nfs => false 
-  
+  # config.vm.share_folder "sites", "/srv/www", "../sites", :owner => "vagrant", :extra => 'dmode=777,fmode=666', :create => true, :nfs => false
+
   # linux / mac -- use the following 2 lines (because on these systems vboxsf is sooooo sloooow)
   config.vm.network :hostonly, "192.168.33.10"
   config.nfs.map_uid = 501
-  config.nfs.map_gid = 20 
-  config.vm.share_folder "sites", "/srv/www", "../sites", :extra => 'dmode=755,fmode=644', :map_uid => 501, :map_gid => 20, :nfs => true, :create => true
+  config.nfs.map_gid = 20
+  config.vm.share_folder "sites", "/srv/www", "../sites", :extra => 'dmode=755,fmode=644', :map_uid => 501, :map_gid => 20, :nfs => false, :create => true
   # config.vm.share_folder "sites", "/srv/www", "../sites", :extra => 'dmode=777,fmode=666', :map_gid => "1003", :map_uid => "1001", :nfs => true, :create => true
 
   # Install Puppet via puppet labs yum repo
@@ -109,7 +109,7 @@ Vagrant::Config.run do |config|
   end
 
   # Enable provisioning with chef solo, specifying a cookbooks path, roles
-  # path, and data_bags path (all relative to this Vagrantfile), and adding 
+  # path, and data_bags path (all relative to this Vagrantfile), and adding
   # some recipes and/or roles.
   #
   # config.vm.provision :chef_solo do |chef|
