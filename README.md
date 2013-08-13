@@ -10,11 +10,12 @@
       $ git submodule update`
 1.   Create the sites directory
      `$ mkdir ../sites`
-1.	 Optionally create your own github ssh keys (they'll be copied into the VM)
-	 `$ mkdir ../ssh-config && ssh-keygen -f ../ssh-config/github.rsa`
+1.   Optionally create your own github ssh keys (they'll be copied into the VM)
+     `$ mkdir ../ssh-config && ssh-keygen -f ../ssh-config/github.rsa`
 1.   Bring up Vagrant
      `$ vagrant up`
-
+1.  Provision another domain (without sudo -i this won't work as mysql root pwd is stored in /root/.my.cnf)
+    `vagrant@precise32:~$ sudo -i puppet apply --modulepath=/vagrant/puppet/modules/ -e 'holly_drupal::site{"example11.com": }'`
 ##Troubleshooting##
 1.  Missing ruby libs (stdlib)
     Apache::vhosts can't find validate_re
@@ -107,7 +108,7 @@ A wrapper around
 *   ~~Permissions on `files` are bad~~ changed owner to apache in vagrant file
 *   Drush aliases (for sync from staging or production and sanitise)
 *   ~~.ssh/config is missing~~
-*  	install unzip (for drush)
+*   install unzip (for drush)
 
 ##Installing Drush##
 
@@ -141,7 +142,7 @@ Named or all features
 
 *   Modules in contrib are in the .make and .info files
 *   Modules in custom are in the .info file
-*	Could use pm-list --type=module --status=enabled (but its slow)
+*   Could use pm-list --type=module --status=enabled (but its slow)
 
 ###Connect to staging and pull in a sanitised database###
 
@@ -153,4 +154,4 @@ Named or all features
   sudo /usr/bin/pear channel-discover pear.drush.org
   sudo pear install drush/drush-6.0.0
 * Enable apache rewriting
-  sudo a2enmod rewrite && sudo service apache2 reload 
+  sudo a2enmod rewrite && sudo service apache2 reload
