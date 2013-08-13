@@ -3,12 +3,11 @@ class holly_drupal(
   $domains = 'example.com'
 ) {
 
-  include apache
-  include mysql
-
-  # if $domains is not an array cast it as an array
-
   define site {
+    include apache
+    include apache::params
+    include mysql
+
     file {"/srv/www/${name}":
       ensure => directory,
       mode   => 755,
@@ -48,18 +47,18 @@ class holly_drupal(
     database_grant { "vagrant@localhost/${dbname}_local":
       privileges => ['all'] ,
     }
-    
+
   # @TODO currently drupal::site overwrites settings. thats bad
   #  drupal::site { "${name}":
-  #    databases => { 
-  #      "default" => { 
-  #        "default" => { 
-  #          database  => "${dbname}_local", 
-  #          username  => 'vagrant', 
-  #          password => 'vagrant', 
-  #          host => 'localhost', 
-  #          port => '', 
-  #          driver => 'mysql', 
+  #    databases => {
+  #      "default" => {
+  #        "default" => {
+  #          database  => "${dbname}_local",
+  #          username  => 'vagrant',
+  #          password => 'vagrant',
+  #          host => 'localhost',
+  #          port => '',
+  #          driver => 'mysql',
   #          prefix => ''
   #        }
   #      }
@@ -81,5 +80,5 @@ class holly_drupal(
     }
   }
 
-  holly_drupal::site{$domains: }    
+  holly_drupal::site{$domains: }
 }
