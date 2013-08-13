@@ -16,6 +16,8 @@
      `$ vagrant up`
 1.  Provision another domain (without sudo -i this won't work as mysql root pwd is stored in /root/.my.cnf)
     `vagrant@precise32:~$ sudo -i puppet apply --modulepath=/vagrant/puppet/modules/ -e 'holly_drupal::site{"example11.com": }'`
+    or `vagrant@precise32:~$ sudo -i puppet apply --modulepath=/vagrant/puppet/modules/ -e 'holly_drupal::site{"example15.com": shortname => "fr", profile => "fred" }'`
+
 ##Troubleshooting##
 1.  Missing ruby libs (stdlib)
     Apache::vhosts can't find validate_re

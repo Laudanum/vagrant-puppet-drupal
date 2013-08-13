@@ -1,9 +1,12 @@
 # init.pp
 class holly_drupal(
-  $domains = 'example.com'
+  $domains = 'example.com',
 ) {
 
-  define site {
+  define site (
+    $shortname = $name,
+    $profile = $name,
+  ) {
     include apache
     include apache::params
     include mysql
@@ -28,6 +31,25 @@ class holly_drupal(
     file {"/srv/www/${name}/content":
       ensure => directory,
       mode   => 755,
+    }
+
+    file {"/etc/drush":
+      ensure => directory,
+      mode   => 755,
+    }
+
+    $domain = $name
+    # drush aliases
+    file { "/etc/drush/${shortname}.aliases.drushrc.php":
+      ensure  => 'present',
+      path    => "/etc/drush/${shortname}.aliases.drushrc.php",
+      content => template("holly_drupal/domain.aliases.drushrc.php.erb"),
+      owner   => 'vagrant',
+      group   => 'vagrant',
+      mode    => '0644',
+      require => [
+        File['/etc/drush/'],
+      ],
     }
 
     $dbname = regsubst($name, '\.', '_', 'G')

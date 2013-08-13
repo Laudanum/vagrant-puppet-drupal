@@ -1,0 +1,57 @@
+<?php
+/*
+  Place aliases.drushrc.php in sites/default
+
+  rsync staging files to local
+  $ drush --verbose --debug rsync @domain.staging:%files @domain.local:%files
+
+  $ drush @domain.staging sql-dump > ../../../../../backup/staging.domain.com.sql
+
+  $ drush --verbose --debug sql-sync @domain.staging @domain.local
+
+  private directory
+  $ drush @domain.staging dd private \
+  /srv/www/domain.com.au/staging/../../content/staging/private
+
+  rsync private directory
+  $ drush --verbose --debug rsync @domain.staging:../content/private @domain.local:../content/private
+
+  Interestingly this stops working as Drush hammers ssh enough to cause wahapu to shutdown our IP address before we can complete.
+*/
+
+$domain = "<%= domain %>";
+$parent_root = "/srv/www";
+$profile = "<%= profile %>";
+
+$tiers = array(
+  'local',
+  'staging',
+  'public',
+);
+
+foreach ( $tiers as $tier ) {
+  $root = $roots[$tier] ? $roots[$tier] : "$parent_root/$domain";
+  $docroot = $roots[$tier] ? $roots[$tier] : "$root/$tier";
+  $uri = ($tier=='public') ? $domain : "$tier.$domain";
+  $aliases[$tier] = array(
+    'uri' => $uri,
+    'root' => $docroot, // This doesn't work with ~/Sites/dev.local
+    'path-aliases' => array(
+      '%files' => "sites/$tier.$domain/files",
+      '%dump' => "$root/backup/$domain-$tier.sql", // Arbitrary location for temp files
+    ),
+    'command-specific' => array (
+      'pm-download' => array (
+        'destination' => "profiles/$profile/modules/contrib",
+      ),
+    ),
+  );
+
+  if ( $tier != 'local' ) {
+    $aliases[$tier]['remote-host'] = 'example.com';
+    $aliases[$tier]['ssh-options'] = '-p 22 -i /home/vagrant/.ssh/id_rsa';
+    $aliases[$tier]['remote-user'] = 'username';
+  }
+}
+?>
+
