@@ -33,11 +33,6 @@ class holly_drupal(
       mode   => 755,
     }
 
-    file {"/etc/drush":
-      ensure => directory,
-      mode   => 755,
-    }
-
     $domain = $name
     # drush aliases
     file { "/etc/drush/${shortname}.aliases.drushrc.php":
@@ -48,7 +43,7 @@ class holly_drupal(
       group   => 'vagrant',
       mode    => '0644',
       require => [
-        File['/etc/drush/'],
+        File['/etc/drush'],
       ],
     }
 

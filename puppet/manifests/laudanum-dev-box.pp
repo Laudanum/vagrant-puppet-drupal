@@ -73,7 +73,7 @@ class laudanum_dev_box {
 #  }
 
 # Create necessary parent directories.
-  file {["/srv", "/srv/www"]:
+  file {["/srv", "/srv/www", '/etc/drush',]:
       ensure => directory,
 #      mode => 644,
   }
