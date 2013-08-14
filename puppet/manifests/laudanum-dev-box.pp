@@ -1,35 +1,16 @@
+
 # support quickdrupal
 # $ sudo apt-get install php5-cgi
 # $ sudo chown vagrant /usr/share/php/drush/lib
 
 
 $dev_domains = [
-  "ailiesnow.com",
-  "artlib.com.au",
   "d8.example.com",
   "example.com",
   "hol.ly",
-  "notionproject.com",
-  "spacetimeconcerto.com",
-  "scanlines.net",
-  "supanova.org.au",
-  "d7.supanova.org.au",
   "janus.supanova.org.au",
-  "matteozingales.com",
-  "redshiftaa.com.au",
-  "saccid.com",
-  "subedit.me",
-  "turpincrawford.com",
-  "newsouthbooks.com.au",
+  "stylecraft.com.au",
 ]
-# on bruno:
-# need to install ruby, compass and zen
-# sudo apt-get install ruby libxml2-dev libxslt1-dev
-# sudo gem install compass
-# sudo gem install zen
-# ERROR:  Error installing zen:
-#  zen requires Ruby version >= 1.9.2.
-# still always need to sudo pear uninstall drush/drush on every boot
 
 class laudanum_dev_box {
 
@@ -99,6 +80,7 @@ class laudanum_dev_box {
 
   class {'apache':
     require => Exec["aptgetupdate"],
+    mpm_module => 'prefork',
   }
   class {'apache::mod::php': }
   # enables rewrite
