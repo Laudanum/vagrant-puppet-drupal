@@ -33,6 +33,10 @@ class laudanum_dev_box {
     ensure => "present",
     require => Exec["aptgetupdate"],
   }
+  package { "curl":
+    ensure => "present",
+    require => Exec["aptgetupdate"],
+  }
   package { "lynx":
     ensure => "present",
     require => Exec["aptgetupdate"],
@@ -81,6 +85,7 @@ class laudanum_dev_box {
   class {'apache':
     require => Exec["aptgetupdate"],
     mpm_module => 'prefork',
+    servername => 'localhost',
   }
   class {'apache::mod::php': }
   # enables rewrite

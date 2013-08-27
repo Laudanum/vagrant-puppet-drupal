@@ -7,7 +7,12 @@ class holly_drupal(
     $shortname = $name,
     $profile = $name,
   ) {
-    include apache
+
+    class {'apache':
+      # mpm_module => 'prefork',
+      # servername => 'localhost',
+    }
+
     include apache::params
     include mysql
 
@@ -42,9 +47,6 @@ class holly_drupal(
       owner   => 'vagrant',
       group   => 'vagrant',
       mode    => '0644',
-      require => [
-        File['/etc/drush'],
-      ],
     }
 
     $dbname = regsubst($name, '\.', '_', 'G')

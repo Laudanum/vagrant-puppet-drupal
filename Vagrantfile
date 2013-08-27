@@ -8,6 +8,7 @@ Vagrant::Config.run do |config|
 
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "precise32"
+  # config.vm.hostname = "dev.hol.ly"
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
@@ -23,7 +24,7 @@ Vagrant::Config.run do |config|
   config.ssh.port = 2222
   config.vm.customize ["modifyvm", :id, "--rtcuseutc", "on"]
   # config.vm.customize ["modifyvm", :id, "natdnshostresolver1--memory", "1536", "--cpus", "2", "--name", "Laudanum dev box"]
-  config.vm.customize ["modifyvm", :id, "--memory", "1536"]
+  config.vm.customize ["modifyvm", :id, "--memory", "3072"]
   # config.vm.customize ["modifyvm", :id, "--name", "Laudanum dev box Ubuntu"]
   config.vm.customize ["modifyvm", :id, "--natdnshostresolver1", "on", "--natdnsproxy1", "on"]
 
@@ -57,7 +58,7 @@ Vagrant::Config.run do |config|
   # config.vm.provision :shell, :inline => "echo nameserver 10.0.2.2 > /etc/resolv.conf"
 
   # Install Puppet
-  # config.vm.provision :shell, :inline => "sudo yum -y install puppet"
+  config.vm.provision :shell, :inline => "sudo apt-get -y install puppet-common"
 
   # Install Puppet via puppet labs yum repo
   # config.vm.provision :shell, :path => "install-puppet.sh"
