@@ -7,19 +7,7 @@ class holly_drupal(
     $shortname = $name,
     $profile = $name,
   ) {
-
-    class {'apache':
-      # mpm_module => 'prefork',
-      # servername => 'localhost',
-    }
-
-    include apache::params
-    include mysql
-
-    file {"/srv/www/${name}":
-      ensure => directory,
-      mode   => 755,
-    }
+    include holly_server
 
   # apache is defining this already--but permissions are wrong?
   #  file {"${name}_drupal_root":
@@ -100,4 +88,22 @@ class holly_drupal(
   }
 
   holly_drupal::site{$domains: }
+}
+
+class holly_server {
+    class {'apache':
+      mpm_module => 'prefork',
+      servername => 'localhost',
+      purge_configs => false, # prevent apache manifest from deleting old configs
+    }
+    class {'apache::mod::php': }
+
+    include apache::params
+    # a2mod { 'rewrite': ensure => present; }
+    include mysql
+
+    file {"/srv/www/${name}":
+      ensure => directory,
+      mode   => 755,
+    }
 }

@@ -82,12 +82,12 @@ class laudanum_dev_box {
 #      mode => 644,
   }
 
-  class {'apache':
-    require => Exec["aptgetupdate"],
-    mpm_module => 'prefork',
-    servername => 'localhost',
-  }
-  class {'apache::mod::php': }
+#  class {'apache':
+#    require => Exec["aptgetupdate"],
+#    mpm_module => 'prefork',
+#    servername => 'localhost',
+#    purge_configs => false,
+#  }
   # enables rewrite
   # class {'apache::mod::default': }
   case $operatingsystem {
