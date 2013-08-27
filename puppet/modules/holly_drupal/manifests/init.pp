@@ -81,7 +81,7 @@ class holly_drupal(
       docroot       => "/srv/www/${name}/local",
       port          => 80,
   #    serveraliases => $aliases,
-      serveradmin   =>  'admin@${name}',
+      serveradmin   =>  "admin@${name}",
       logroot       => "/var/log/$apache::params::apache_name/${name}",
       override      => "All",
     }
